@@ -37,7 +37,7 @@ public class AuthenticationService {
     }
     //    private final Key JWT_SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     // Thời gian có hiêu lực của jwt (10 ngày)
-    private final long JWT_EXPIRATION = 864000000L;
+    private final long JWT_EXPIRATION = 86400000L;
 
     public AuthenticationResponse login(String email, String password) {
         User user = userRepository.findByEmail(email);

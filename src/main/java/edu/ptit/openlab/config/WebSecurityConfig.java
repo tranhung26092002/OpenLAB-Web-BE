@@ -69,6 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()  // Bắt đầu cấu hình các quy tắc uỷ quyền cho các yêu cầu HTTP.
                 .antMatchers("/api/images/**",
                         "/api/upload/video/**",
+                        "/api/course/**",
+                        "/api/lesson/**",
                         "/auth/login/**",
                         "/auth/register/**",
                         "/swagger-ui/**",

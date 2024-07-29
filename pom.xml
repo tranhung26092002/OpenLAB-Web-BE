@@ -8,10 +8,10 @@
         <version>2.7.15</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>edu.poly</groupId>
-    <artifactId>openlab</artifactId>
+    <groupId>edu.ptit</groupId>
+    <artifactId>openlab_be</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>OpenLab-BE</name>
+    <name>openlab_be</name>
     <description>OpenLab-BE</description>
     <url/>
     <licenses>
@@ -27,7 +27,7 @@
         <url/>
     </scm>
     <properties>
-        <java.version>17</java.version>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
