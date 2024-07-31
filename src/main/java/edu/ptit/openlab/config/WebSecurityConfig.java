@@ -71,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/upload/video/**",
                         "/api/course/**",
                         "/api/lesson/**",
+                        "/auth/**",
                         "/auth/login/**",
                         "/auth/register/**",
                         "/swagger-ui/**",

@@ -52,7 +52,7 @@ public class AuthenticationService {
         throw new BadCredentialsException("Invalid email or password");
     }
 
-    public User register(String username, String email, String password, String role) throws IllegalAccessException {
+    public User register(String name, String email, String password, String role) throws IllegalAccessException {
         //Kiểm tra xem email tồn tại không
         Optional<User> existingUser = Optional.ofNullable(userRepository.findByEmail(email));
         if(existingUser.isPresent()){
@@ -65,7 +65,7 @@ public class AuthenticationService {
         // Tao nguoi dung moi va luu vao co so du lieu
         User newUser = new User();
 
-        newUser.setName(username);
+        newUser.setName(name);
         newUser.setEmail(email);
         newUser.setPassword(encryptedPassword);
 
@@ -113,7 +113,9 @@ public class AuthenticationService {
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
-
+    public Optional getUser(Long userId) {
+        return userRepository.findById(userId);
+    }
     private String createToken(User user) {
         // Thời gian hết hạn của Token
         Date expiryDate = new Date(System.currentTimeMillis() + JWT_EXPIRATION);

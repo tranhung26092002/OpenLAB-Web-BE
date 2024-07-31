@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
             List<Course> userCourses = user.getCourses();
 
             if (userCourses.isEmpty()) {
-                return new BaseResponse(404, "Courses not found", null);
+                return new BaseResponse(200, "Courses not found", null);
             }
 
             List<CourseResponseDTO> userCoursesDTO = userCourses.stream()

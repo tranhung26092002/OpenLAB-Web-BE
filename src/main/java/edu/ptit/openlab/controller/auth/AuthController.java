@@ -12,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,10 +43,26 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequestDTO request){
         try {
-            User user = authenticationService.register(request.getUsername(), request.getEmail(), request.getPassword(), request.getRole());
+            User user = authenticationService.register(request.getName(), request.getEmail(), request.getPassword(), request.getRole());
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (IllegalArgumentException | IllegalAccessException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<BaseResponse> getUser(@PathVariable Long userId){
+        Optional user = authenticationService.getUser(userId);
+        BaseResponse baseResponse = new BaseResponse();
+        try {
+            baseResponse.setStatus(200);
+            baseResponse.setMessage("Successfully");
+            baseResponse.setData(user.get());
+            return ResponseEntity.ok(baseResponse);
+        } catch (Exception e){
+            baseResponse.setStatus(400);
+            baseResponse.setMessage("FAILED");
+            return ResponseEntity.ok(baseResponse);
         }
     }
 
@@ -67,12 +84,12 @@ public class AuthController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<BaseResponse> updateUser(@PathVariable Long userId,
-                                                   @RequestParam(required = false) String username,
+                                                   @RequestParam(required = false) String name,
                                                    @RequestParam(required = false) String email,
                                                    @RequestParam(required = false) String password,
                                                    @RequestParam(required = false) String role
     ){
-        User updateUser = authenticationService.updateUser(userId, username, email, password, role);
+        User updateUser = authenticationService.updateUser(userId, name, email, password, role);
         BaseResponse baseResponse = new BaseResponse();
         try {
             baseResponse.setStatus(200);

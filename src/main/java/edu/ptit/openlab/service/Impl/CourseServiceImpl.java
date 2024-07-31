@@ -80,7 +80,7 @@ public class CourseServiceImpl implements CourseService {
         try{
             List<Course> courseList = courseRepository.searchCourse(search);
             if(courseList.isEmpty()){
-                return new BaseResponse(404, "No results found for the search query", null);
+                return new BaseResponse(200, "No results found for the search query", null);
             }else{
                 return new BaseResponse(200, "Search results retrieved successfully", courseList);
             }
