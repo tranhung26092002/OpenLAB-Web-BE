@@ -1,55 +1,83 @@
 pipeline {
-    agent any 
+    agent any  // Sử dụng bất kỳ agent nào
+
     tools {
-        // Sử dụng Maven version 3.8.5
-        maven "3.8.5"
+        maven "3.8.5"  // Sử dụng Maven version 3.8.5
     }
+
+    environment {
+        // Định nghĩa các biến môi trường cần thiết
+        DOCKER_IMAGE_NAME = 'tranvanhung26092002/openlab_be'
+        DOCKER_REGISTRY = 'docker.io'
+    }
+
     stages {
-        stage('Compile and Clean') { 
+        stage('Checkout') {
             steps {
-                // Chạy lệnh Maven clean và compile trên Unix agent
-                sh "mvn clean compile"
+                // Kiểm tra mã nguồn từ repository Git
+                git url: 'https://github.com/tranhung26092002/OpenLAB-Web-BE.gitt'
             }
         }
-        stage('Deploy') { 
+
+        stage('Compile and Test') {
             steps {
-                // Chạy lệnh Maven package để tạo file JAR
-                sh "mvn package"
+                // Chạy Maven để clean và build dự án, đồng thời kiểm thử
+                sh "mvn clean package"
             }
         }
+
         stage('Build Docker Image') {
             steps {
-                echo "Building Docker Image for Java Express"
-                sh 'ls' // Liệt kê các file trong thư mục hiện tại
-                // Build Docker image và gán tag với số build của Jenkins
-                sh 'docker build -t tranvanhung26092002/openlab_be:${BUILD_NUMBER} .'
-            }
-        }
-        stage('Docker Login') {
-            steps {
-                // Đăng nhập vào Docker Hub với thông tin đăng nhập đã lưu trong Jenkins Credentials
-                withCredentials([string(credentialsId: 'DockerId', variable: 'Dockerpwd')]) {
-                    sh "docker login -u tranvanhung26092002 -p ${Dockerpwd}"
+                // Xây dựng Docker image từ Dockerfile
+                script {
+                    def buildNumber = "${env.BUILD_NUMBER}"
+                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${buildNumber} ."
                 }
             }
         }
-        stage('Docker Push') {
+
+        stage('Docker Login') {
             steps {
-                // Đẩy Docker image lên Docker Hub
-                sh 'docker push tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
+                // Đăng nhập vào Docker registry
+                withCredentials([string(credentialsId: 'DockerId', variable: 'DOCKER_PASSWORD')]) {
+                    sh "docker login -u ${DOCKER_REGISTRY_USER} -p ${DOCKER_PASSWORD}"
+                }
             }
         }
-        stage('Docker Deploy') {
+
+        stage('Push Docker Image') {
             steps {
-                // Chạy Docker container từ image đã đẩy lên Docker Hub
-                sh 'docker run -itd -p 8082:8082 tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
+                // Đẩy Docker image lên Docker registry
+                script {
+                    def buildNumber = "${env.BUILD_NUMBER}"
+                    sh "docker push ${DOCKER_IMAGE_NAME}:${buildNumber}"
+                }
             }
         }
-        stage('Archiving') { 
+
+        stage('Deploy Docker Container') {
             steps {
-                // Lưu trữ file JAR đã build được
+                // Triển khai Docker container
+                script {
+                    def buildNumber = "${env.BUILD_NUMBER}"
+                    sh "docker run -d -p 8082:8082 --name openlab_be_${buildNumber} ${DOCKER_IMAGE_NAME}:${buildNumber}"
+                }
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                // Lưu trữ các file JAR đã được build
                 archiveArtifacts '**/target/*.jar'
             }
+        }
+    }
+
+    post {
+        always {
+            // Làm sạch Docker containers và images cũ (tuỳ chọn)
+            sh "docker container prune -f"
+            sh "docker image prune -f"
         }
     }
 }
