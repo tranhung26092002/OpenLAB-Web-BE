@@ -1,11 +1,12 @@
 # Sử dụng OpenJDK 8 làm image cơ sở
 FROM openjdk:17-jdk-alpine
 
+WORKDIR /app
+
 # Thêm tệp JAR vào trong image
-ADD target/openlab_be.jar openlab_be.jar
+COPY target/openlab_be-0.0.1-SNAPSHOT.jar /app.jar
 
 # Mở cổng 8080 để truy cập ứng dụng
 EXPOSE 8082
 
-# Chạy ứng dụng Spring Boot
-ENTRYPOINT ["java", "-jar", "/openlab_be.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
