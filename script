@@ -1,0 +1,3 @@
+CREATE USER 'hungtran'@'%' IDENTIFIED BY 'hungtran';
+GRANT ALL PRIVILEGES ON openlab* TO 'hungtran'@'%';
+FLUSH PRIVILEGES;

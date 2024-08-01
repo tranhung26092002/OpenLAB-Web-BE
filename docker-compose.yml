@@ -10,7 +10,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - openlab-mysql-data:/var/lib/mysql
 
   springboot-app:
     image: openlab_be
