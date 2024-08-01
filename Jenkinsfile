@@ -34,17 +34,9 @@ pipeline {
                 sh 'echo y | docker container prune '
                 sh 'docker volume rm openlab-mysql-data || echo "no volume"'
 
-                sh '''
-                docker run --name openlab-mysql --rm --network dev -v openlab-mysql-data:/var/lib/mysql \
-                -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_LOGIN_PSW} \
-                -e MYSQL_DATABASE=openlab \
-                -p 3306:3306 \
-                -d mysql:8.0
-                '''
+                sh "docker run --name openlab-mysql --rm --network dev -v openlab-mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_LOGIN_PSW} -e MYSQL_DATABASE=openlab -p 3307:3306 -d mysql:8.0 "
                 sh 'sleep 20'
-                sh '''
-                docker exec -i openlab-mysql mysql --user=root --password=${MYSQL_ROOT_LOGIN_PSW} < script
-                '''
+                sh "docker exec -i openlab-mysql mysql --user=root --password=${MYSQL_ROOT_LOGIN_PSW} < script"
             }
         }
 
