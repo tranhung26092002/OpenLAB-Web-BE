@@ -27,28 +27,16 @@ pipeline {
 
         stage('Deploy MySQL to DEV') {
             steps {
-                echo 'Deploying and cleaning MySQL container'
+                echo 'Deploying and cleaning'
                 sh 'docker image pull mysql:8.0'
-                sh 'docker network create dev || echo "Network already exists"'
-                sh 'docker container stop openlab-mysql || echo "Container does not exist"'
-                sh 'docker container rm openlab-mysql || echo "Container does not exist"'
-                sh 'echo y | docker container prune'
-                sh 'docker volume rm openlab-mysql-data || echo "Volume does not exist"'
+                sh 'docker network create dev || echo "this network exists"'
+                sh 'docker container stop openlab-mysql || echo "this container does not exist" '
+                sh 'echo y | docker container prune '
+                sh 'docker volume rm openlab-mysql-data || echo "no volume"'
 
-                sh '''
-                docker run --name openlab-mysql --rm --network dev -v openlab-mysql-data:/var/lib/mysql \
-                -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_LOGIN_PSW} \
-                -e MYSQL_DATABASE=openlab \
-                -d mysql:8.0
-                '''
+                sh "docker run --name openlab-mysql --rm --network dev -v openlab-mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_LOGIN_PSW} -e MYSQL_DATABASE=openlab  -d mysql:8.0 "
                 sh 'sleep 20'
-                sh '''
-                docker exec -i openlab-mysql mysql --user=root --password=${MYSQL_ROOT_LOGIN_PSW} <<EOF
-                CREATE DATABASE IF NOT EXISTS openlab;
-                USE openlab;
-                -- Add your SQL commands here, e.g., create tables
-                EOF
-                '''
+                sh "docker exec -i openlab-mysql mysql --user=root --password=${MYSQL_ROOT_LOGIN_PSW} < script"
             }
         }
 
