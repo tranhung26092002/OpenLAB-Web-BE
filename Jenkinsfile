@@ -18,7 +18,7 @@ pipeline {
 
         stage('Packaging/Pushing image') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io') {
+                withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
                     sh 'docker build -t tranvanhung26092002/openlab_be .'
                     sh 'docker push tranvanhung26092002/openlab_be'
                 }
@@ -31,6 +31,7 @@ pipeline {
                 sh 'docker image pull mysql:8.0'
                 sh 'docker network create dev || echo "Network already exists"'
                 sh 'docker container stop openlab-mysql || echo "Container does not exist"'
+                sh 'docker container rm openlab-mysql || echo "Container does not exist"'
                 sh 'echo y | docker container prune'
                 sh 'docker volume rm openlab-mysql-data || echo "Volume does not exist"'
 
@@ -53,9 +54,10 @@ pipeline {
 
         stage('Deploy Spring Boot to DEV') {
             steps {
-                echo 'Deploying and cleaning'
+                echo 'Deploying and cleaning Spring Boot container'
                 sh 'docker image pull tranvanhung26092002/openlab_be'
                 sh 'docker container stop openlab-springboot || echo "Container does not exist"'
+                sh 'docker container rm openlab-springboot || echo "Container does not exist"'
                 sh 'docker network create dev || echo "Network already exists"'
                 sh 'echo y | docker container prune'
 
