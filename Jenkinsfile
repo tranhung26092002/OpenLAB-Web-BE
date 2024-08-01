@@ -1,7 +1,5 @@
 pipeline {
-
     agent any
-
     tools { 
         maven 'my-maven' 
     }
@@ -9,17 +7,16 @@ pipeline {
         MYSQL_ROOT_LOGIN = credentials('mysql-root-login')
     }
     stages {
-
         stage('Build with Maven') {
             steps {
                 sh 'mvn --version'
                 sh 'java -version'
-                sh 'mvn clean package -Dmaven.test.failure.ignore=true'
+                sh 'mvn clean -Dmaven.test.failure.ignore=true'
+                sh 'mvn package -Dmaven.test.failure.ignore=true'
             }
         }
 
-        stage('Packaging/Pushing imagae') {
-
+        stage('Packaging/Pushing image') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
                     sh 'docker build -t tranvanhung26092002/openlab_be .'
@@ -54,10 +51,8 @@ pipeline {
                 sh 'docker container run -d --rm --name openlab-springboot -p 8082:8082 --network dev tranvanhung26092002/openlab_be'
             }
         }
- 
     }
     post {
-        // Clean after build
         always {
             cleanWs()
         }
