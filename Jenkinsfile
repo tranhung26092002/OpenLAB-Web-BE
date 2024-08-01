@@ -19,8 +19,8 @@ pipeline {
         stage('Packaging/Pushing image') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
-                    sh 'docker build -t tranvanhung26092002/openlab_be .'
-                    sh 'docker push tranvanhung26092002/openlab_be'
+                    sh 'docker build -t tranvanhung26092002/openlab_be:${BUILD_NUMBER} .'
+                    sh 'docker push tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
                 }
             }
         }
@@ -55,13 +55,13 @@ pipeline {
         stage('Deploy Spring Boot to DEV') {
             steps {
                 echo 'Deploying and cleaning Spring Boot container'
-                sh 'docker image pull tranvanhung26092002/openlab_be'
+                sh 'docker image pull tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
                 sh 'docker container stop openlab-springboot || echo "Container does not exist"'
                 sh 'docker container rm openlab-springboot || echo "Container does not exist"'
                 sh 'docker network create dev || echo "Network already exists"'
                 sh 'echo y | docker container prune'
 
-                sh 'docker run -d --rm --name openlab-springboot -p 8082:8082 --network dev tranvanhung26092002/openlab_be'
+                sh 'docker run -itd -p -p 8082:8082 tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
             }
         }
     }
