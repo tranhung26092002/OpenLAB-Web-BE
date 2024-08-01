@@ -4,7 +4,7 @@ pipeline {
         maven 'my-maven' 
     }
     environment {
-        MYSQL_ROOT_LOGIN_PSW = credentials('mysql-root-login')
+        MYSQL_ROOT_LOGIN_PSW = credentials('mysql-root-login')  // Đảm bảo rằng credentials ID đúng
     }
     stages {
         stage('Build with Maven') {
@@ -18,7 +18,7 @@ pipeline {
 
         stage('Packaging/Pushing image') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
+                withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io') {
                     sh 'docker build -t tranvanhung26092002/openlab_be .'
                     sh 'docker push tranvanhung26092002/openlab_be'
                 }
@@ -53,15 +53,13 @@ pipeline {
 
         stage('Deploy Spring Boot to DEV') {
             steps {
-                echo 'Deploying and cleaning Spring Boot application'
+                echo 'Deploying and cleaning'
                 sh 'docker image pull tranvanhung26092002/openlab_be'
                 sh 'docker container stop openlab-springboot || echo "Container does not exist"'
+                sh 'docker network create dev || echo "Network already exists"'
                 sh 'echo y | docker container prune'
 
-                sh '''
-                docker run -d --rm --name openlab-springboot -p 8082:8082 --network dev \
-                tranvanhung26092002/openlab_be
-                '''
+                sh 'docker run -d --rm --name openlab-springboot -p 8082:8082 --network dev tranvanhung26092002/openlab_be'
             }
         }
     }
