@@ -46,11 +46,10 @@ pipeline {
                 echo 'Deploying and cleaning Spring Boot container'
                 sh 'docker image pull tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
                 sh 'docker container stop openlab_be || echo "Container does not exist"'
-                sh 'docker container rm openlab_be || echo "Container does not exist"'
                 sh 'docker network create dev || echo "Network already exists"'
                 sh 'echo y | docker container prune'
 
-                sh 'docker run -d -p 8082:8082 tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
+                sh 'docker container run -d --rm --name openlab_be -p 8082:8082 --network dev tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
             }
         }
     }
