@@ -40,6 +40,7 @@ pipeline {
                 docker run --name openlab-mysql --rm --network dev -v openlab-mysql-data:/var/lib/mysql \
                 -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_LOGIN_PSW} \
                 -e MYSQL_DATABASE=openlab \
+                -p 3306:3306 \  // Thêm dòng này để ánh xạ port
                 -d mysql:8.0
                 '''
                 sh 'sleep 20'
