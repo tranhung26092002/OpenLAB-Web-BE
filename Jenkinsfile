@@ -43,11 +43,11 @@ pipeline {
                 '''
                 sh 'sleep 20'
                 sh '''
-                docker exec -i openlab-mysql mysql --user=root --password=${MYSQL_ROOT_LOGIN_PSW} <<-EOSQL
+                docker exec -i openlab-mysql mysql --user=root --password=${MYSQL_ROOT_LOGIN_PSW} <<EOF
                 CREATE DATABASE IF NOT EXISTS openlab;
                 USE openlab;
                 -- Add your SQL commands here, e.g., create tables
-                EOSQL
+                EOF
                 '''
             }
         }
