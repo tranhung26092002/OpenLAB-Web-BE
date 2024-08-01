@@ -18,7 +18,7 @@ pipeline {
 
         stage('Packaging/Pushing image') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io') {
+                withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
                     sh 'docker build -t tranvanhung26092002/openlab_be:${BUILD_NUMBER} .'
                     sh 'docker push tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
                 }
