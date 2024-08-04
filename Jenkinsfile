@@ -23,11 +23,10 @@ pipeline {
             }
         }
 
-
         stage('Stop and Remove Previous Container') {
             steps {
                 script {
-                    def containerName = "openlab_fe"
+                    def containerName = "openlab_be"
                     sh "sudo docker stop ${containerName} || true"
                     sh "sudo docker rm ${containerName} || true"
                 }
@@ -37,7 +36,7 @@ pipeline {
         stage('Remove Previous Docker Image'){
             steps{
                 script{
-                    def imageName = 'my-docker-image'
+                    def imageName = 'openlab_be'
                     def imageTag = 'latest'
 
                     def dockerImageId = sh(
@@ -46,12 +45,7 @@ pipeline {
                     ).trim()
 
                     if (dockerImageId) {
-                        def dockerImageRepo = sh(
-                            script: "sudo docker inspect --format='{{.RepoTags}}' $dockerImageId | cut -d ':' -f1 | cut -d '[' -f2 | cut -d '\"' -f2",
-                            returnStdout: true
-                        ).trim()
-
-                        sh "sudo docker rmi -f \$(sudo docker images -q $dockerImageRepo/$imageName:$imageTag)"
+                        sh "sudo docker rmi -f $dockerImageId"
                     } else {
                         echo "Docker image $imageName:$imageTag does not exist"
                     }
@@ -59,18 +53,17 @@ pipeline {
             }
         }
 
-        // stage('Build Docker Image') {
-        //     steps {
-        //         sh 'sudo docker-compose build'
-        //     }
-        // }
+        stage('Build Docker Image') {
+            steps {
+                sh 'sudo docker-compose build'
+            }
+        }
 
-        stage ('Creating and Deploy Container') {
+        stage('Creating and Deploy Container') {
             steps {
                 sh 'sudo docker-compose up --force-recreate -d'
             }
         }
-
     }
 
     post {
