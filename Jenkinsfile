@@ -8,6 +8,15 @@ pipeline {
             }
         }
 
+        stage('Prepare') {
+            steps {
+                script {
+                    // Cấp quyền thực thi cho Maven Wrapper
+                    sh 'chmod +x ./mvnw'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 sh './mvnw clean install -Dmaven.test.skip=true -Dspring-boot.repackage.main-class=edu.ptit.openlab'
