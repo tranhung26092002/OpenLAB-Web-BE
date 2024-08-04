@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    
     stages {
         stage('Build') {
             steps {
@@ -23,6 +23,7 @@ pipeline {
             }
         }
 
+
         stage('Stop and Remove Previous Container') {
             steps {
                 script {
@@ -33,50 +34,43 @@ pipeline {
             }
         }
 
-        stage('Remove Previous Docker Image') {
-            steps {
-                script {
+        stage('Remove Previous Docker Image'){
+            steps{
+                script{
                     def imageName = 'my-docker-image'
                     def imageTag = 'latest'
-                    def imageId = sh(
-                        script: "sudo docker images -q ${imageName}:${imageTag}",
+
+                    def dockerImageId = sh(
+                        script: "sudo docker images -q $imageName:$imageTag",
                         returnStdout: true
                     ).trim()
 
-                    if (imageId) {
-                        sh "sudo docker rmi -f ${imageId}"
+                    if (dockerImageId) {
+                        def dockerImageRepo = sh(
+                            script: "sudo docker inspect --format='{{.RepoTags}}' $dockerImageId | cut -d ':' -f1 | cut -d '[' -f2 | cut -d '\"' -f2",
+                            returnStdout: true
+                        ).trim()
+
+                        sh "sudo docker rmi -f \$(sudo docker images -q $dockerImageRepo/$imageName:$imageTag)"
                     } else {
-                        echo "Docker image ${imageName}:${imageTag} does not exist"
+                        echo "Docker image $imageName:$imageTag does not exist"
                     }
                 }
             }
         }
 
-        stage('Validate Docker Compose File') {
+        // stage('Build Docker Image') {
+        //     steps {
+        //         sh 'sudo docker-compose build'
+        //     }
+        // }
+
+        stage ('Creating and Deploy Container') {
             steps {
-                sh 'sudo docker-compose config'
+                sh 'sudo docker-compose up --force-recreate -d'
             }
         }
 
-        stage('Clean Up') {
-            steps {
-                sh 'sudo docker-compose down -v'
-            }
-        }
-
-        stage('Creating and Deploy Container') {
-            steps {
-                script {
-                    try {
-                        sh 'sudo docker-compose up --force-recreate -d'
-                    } catch (Exception e) {
-                        echo 'Docker Compose failed with error: ' + e.getMessage()
-                        sh 'docker-compose logs' // Optional: View logs for debugging
-                        error 'Docker Compose failed'
-                    }
-                }
-            }
-        }
     }
 
     post {
