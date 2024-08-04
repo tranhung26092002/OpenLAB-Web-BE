@@ -1,59 +1,78 @@
 pipeline {
     agent any
-    tools { 
-        maven 'my-maven' 
-    }
-    environment {
-        MYSQL_ROOT_LOGIN_PSW = credentials('mysql-root-login')  // Đảm bảo rằng credentials ID đúng
-    }
+    
     stages {
-        stage('Build with Maven') {
+        stage('Build') {
             steps {
-                sh 'mvn --version'
-                sh 'java -version'
-                sh 'mvn clean -Dmaven.test.failure.ignore=true'
-                sh 'mvn package -Dmaven.test.failure.ignore=true'
+                sh 'bash ./mvnw clean install -Dmaven.test.skip=true -Dspring-boot.repackage.main-class=edu.ptit.openlab'
             }
         }
 
-        stage('Packaging/Pushing image') {
+        stage('Verify Artifact') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/') {
-                    sh 'docker build -t tranvanhung26092002/openlab_be:${BUILD_NUMBER} .'
-                    sh 'docker push tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
+                script {
+                    def artifactPath = sh(
+                        script: 'ls target/*.jar',
+                        returnStdout: true
+                    ).trim()
+                    if (artifactPath.empty) {
+                        error 'Artifact not found'
+                    }
+                    echo "Artifact found at ${artifactPath}"
                 }
             }
         }
 
-        stage('Deploy MySQL to DEV') {
+
+        stage('Stop and Remove Previous Container') {
             steps {
-                echo 'Deploying and cleaning'
-                sh 'docker image pull mysql:8.0 || echo "Failed to pull MySQL image"'
-                sh 'docker network create dev || echo "this network exists"'
-                sh 'docker container stop openlab-mysql || echo "this container does not exist" '
-                sh 'echo y | docker container prune '
-                sh 'docker volume rm openlab-mysql-data || echo "no volume"'
-
-                sh "docker run --name openlab-mysql --rm --network dev -v openlab-mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_LOGIN_PSW} -e MYSQL_DATABASE=openlab -p 3307:3306 -d mysql:8.0 "
-                sh 'sleep 20'
-
-                sh "docker exec -i openlab-mysql mysql --user=root --password=${MYSQL_ROOT_LOGIN_PSW} openlab < /path/to/your/script.sql"
+                script {
+                    def containerName = "openlab_fe"
+                    sh "sudo docker stop ${containerName} || true"
+                    sh "sudo docker rm ${containerName} || true"
+                }
             }
         }
 
-        stage('Deploy Spring Boot to DEV') {
-            steps {
-                echo 'Deploying and cleaning Spring Boot container'
-                sh 'docker image pull tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
-                sh 'docker container stop openlab_be || echo "Container does not exist"'
-                sh 'docker container rm openlab_be || echo "Container does not exist"'
-                sh 'docker network create dev || echo "Network already exists"'
-                sh 'echo y | docker container prune'
+        stage('Remove Previous Docker Image'){
+            steps{
+                script{
+                    def imageName = 'my-docker-image'
+                    def imageTag = 'latest'
 
-                sh 'docker container run -d --rm --name openlab_be -p 8082:8082 tranvanhung26092002/openlab_be:${BUILD_NUMBER}'
+                    def dockerImageId = sh(
+                        script: "sudo docker images -q $imageName:$imageTag",
+                        returnStdout: true
+                    ).trim()
+
+                    if (dockerImageId) {
+                        def dockerImageRepo = sh(
+                            script: "sudo docker inspect --format='{{.RepoTags}}' $dockerImageId | cut -d ':' -f1 | cut -d '[' -f2 | cut -d '\"' -f2",
+                            returnStdout: true
+                        ).trim()
+
+                        sh "sudo docker rmi -f \$(sudo docker images -q $dockerImageRepo/$imageName:$imageTag)"
+                    } else {
+                        echo "Docker image $imageName:$imageTag does not exist"
+                    }
+                }
             }
         }
+
+        // stage('Build Docker Image') {
+        //     steps {
+        //         sh 'sudo docker-compose build'
+        //     }
+        // }
+
+        stage ('Creating and Deploy Container') {
+            steps {
+                sh 'sudo docker-compose up --force-recreate -d'
+            }
+        }
+
     }
+
     post {
         always {
             cleanWs()
