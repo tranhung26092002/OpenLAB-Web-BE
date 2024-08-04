@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'bash ./mvnw clean install -Dmaven.test.skip=true -Dspring-boot.repackage.main-class=edu.ptit.openlab'
+                sh './mvnw clean install -Dmaven.test.skip=true'
             }
         }
 
@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     def artifactPath = sh(
-                        script: 'ls target/*.jar',
+                        script: 'ls target/*.jar || true',
                         returnStdout: true
                     ).trim()
                     if (artifactPath.empty) {
@@ -27,25 +27,25 @@ pipeline {
             steps {
                 script {
                     def containerName = "openlab_be"
-                    sh "sudo docker stop ${containerName} || true"
-                    sh "sudo docker rm ${containerName} || true"
+                    sh "docker stop ${containerName} || true"
+                    sh "docker rm ${containerName} || true"
                 }
             }
         }
 
-        stage('Remove Previous Docker Image'){
-            steps{
-                script{
+        stage('Remove Previous Docker Image') {
+            steps {
+                script {
                     def imageName = 'openlab_be'
                     def imageTag = 'latest'
 
                     def dockerImageId = sh(
-                        script: "sudo docker images -q $imageName:$imageTag",
+                        script: "docker images -q $imageName:$imageTag || true",
                         returnStdout: true
                     ).trim()
 
                     if (dockerImageId) {
-                        sh "sudo docker rmi -f $dockerImageId"
+                        sh "docker rmi -f $dockerImageId"
                     } else {
                         echo "Docker image $imageName:$imageTag does not exist"
                     }
@@ -55,13 +55,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'sudo docker-compose build'
+                sh 'docker-compose build'
             }
         }
 
-        stage('Creating and Deploy Container') {
+        stage('Create and Deploy Container') {
             steps {
-                sh 'sudo docker-compose up --force-recreate -d'
+                sh 'docker-compose up --force-recreate -d'
             }
         }
     }
