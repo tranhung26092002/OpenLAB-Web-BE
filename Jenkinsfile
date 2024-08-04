@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/tranhung26092002/OpenLAB-Web-BE.git'
+                git branch: 'main', url: 'https://github.com/tranhung26092002/OpenLAB-Web-BE.git'
             }
         }
 
