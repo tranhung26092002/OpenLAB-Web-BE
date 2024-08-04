@@ -1,12 +1,11 @@
-# Sử dụng image OpenJDK để chạy ứng dụng
+# Sử dụng image base OpenJDK
 FROM openjdk:17-jdk-alpine
-WORKDIR /app
 
-# Sao chép JAR file từ image build vào image chạy
-COPY --from=build /app/target/openlab_be-0.0.1-SNAPSHOT.jar /app/openlab_be.jar
+# Sao chép JAR file từ target vào image
+COPY target/openlab_be-0.0.1-SNAPSHOT.jar /openlab_be.jar
 
 # Sao chép file cấu hình ứng dụng
-COPY src/main/resources/application.properties /app/application.properties
+COPY src/main/resources/application.properties /openlab_be/application.properties
 
 # Chỉ định lệnh khởi động ứng dụng
-ENTRYPOINT ["java", "-jar", "/app/openlab_be.jar"]
+ENTRYPOINT ["java", "-jar", "/openlab_be.jar"]

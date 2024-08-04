@@ -18,8 +18,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/openlab
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: hungtran
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update  # Add this if you want to automatically update the schema
-      SPRING_JPA_SHOW_SQL: true  # Add this to show SQL queries in logs
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
     ports:
       - "8081:8081"
     depends_on:
