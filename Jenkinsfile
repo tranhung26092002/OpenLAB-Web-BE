@@ -27,7 +27,7 @@ pipeline {
         stage('Stop and Remove Previous Container') {
             steps {
                 script {
-                    def containerName = "openlab_fe"
+                    def containerName = "openlab_be"
                     sh "sudo docker stop ${containerName} || true"
                     sh "sudo docker rm ${containerName} || true"
                 }

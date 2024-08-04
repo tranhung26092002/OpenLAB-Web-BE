@@ -3,7 +3,7 @@ services:
     build: .
     ports:
       - "8081:8081"
-    container_name: openlab_fe
+    container_name: openlab_be
     environment:
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://222.255.119.57:3306/openlab
