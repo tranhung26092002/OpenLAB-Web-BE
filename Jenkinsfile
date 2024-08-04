@@ -2,6 +2,12 @@ pipeline {
     agent any
     
     stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/tranhung26092002/OpenLAB-Web-BE.git'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'bash ./mvnw clean install -Dmaven.test.skip=true -Dspring-boot.repackage.main-class=edu.ptit.openlab'
@@ -23,6 +29,13 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t openlab_be .'
+                }
+            }
+        }
 
         stage('Stop and Remove Previous Container') {
             steps {
@@ -37,7 +50,7 @@ pipeline {
         stage('Remove Previous Docker Image'){
             steps{
                 script{
-                    def imageName = 'my-docker-image'
+                    def imageName = 'openlab_be'
                     def imageTag = 'latest'
 
                     def dockerImageId = sh(
@@ -58,9 +71,11 @@ pipeline {
                 }
             }
         }
+
         stage ('Creating and Deploy Container') {
             steps {
-                sh 'sudo docker-compose up --force-recreate -d'
+                sh 'sudo docker run -d --name openlab_be -p 8081:8081 openlab_be'
+                // sh 'sudo docker-compose up --force-recreate -d'
             }
         }
     }
