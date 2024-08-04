@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Checkout') {
             steps {
@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'bash ./mvnw clean install -Dmaven.test.skip=true -Dspring-boot.repackage.main-class=edu.ptit.openlab'
+                sh './mvnw clean install -Dmaven.test.skip=true -Dspring-boot.repackage.main-class=edu.ptit.openlab'
             }
         }
 
@@ -18,10 +18,10 @@ pipeline {
             steps {
                 script {
                     def artifactPath = sh(
-                        script: 'ls target/openlab_be-0.0.1-SNAPSHOT.jar',
+                        script: 'ls target/*.jar',
                         returnStdout: true
                     ).trim()
-                    if (artifactPath.empty) {
+                    if (!artifactPath) {
                         error 'Artifact not found'
                     }
                     echo "Artifact found at ${artifactPath}"
@@ -82,6 +82,7 @@ pipeline {
         }
     }
 }
+
 
 
 
