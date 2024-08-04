@@ -1,11 +1,11 @@
-# Sử dụng image base OpenJDK
-FROM openjdk:17-jdk-alpine
+# Sử dụng image Maven để build ứng dụng
+FROM maven:3.8.4-openjdk-17 AS build
+WORKDIR /app
+COPY . .
+RUN ./mvnw clean package -DskipTests
 
-# Sao chép JAR file từ target vào image
-COPY target/openlab_be-0.0.1-SNAPSHOT.jar /openlab_be.jar
-
-# Sao chép file cấu hình ứng dụng
-COPY src/main/resources/application.properties /openlab_be/application.properties
-
-# Chỉ định lệnh khởi động ứng dụng
-ENTRYPOINT ["java", "-jar", "/openlab_be.jar"]
+# Sử dụng image OpenJDK để chạy ứng dụng
+FROM openjdk:17-jre-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar ./openlab_be.jar
+ENTRYPOINT ["java", "-jar", "openlab_be.jar"]

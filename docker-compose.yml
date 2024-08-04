@@ -1,31 +1,27 @@
-version: '3'
-
+version: '3.8'
 services:
-  openlab_be:
-    build: .
-    ports:
-      - "8081:8081"
-    container_name: openlab_be
-    environment:
-      SPRING_PROFILES_ACTIVE: development
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/openlab
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: hungtran
-    depends_on:
-      - db
-
-  db:
+  mysql:
     image: mysql:8.0
-    container_name: openlab_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: openlab
+      MYSQL_USER: root
+      MYSQL_PASSWORD: hungtran
     ports:
       - "3307:3306"
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: hungtran
-      MYSQL_DATABASE: openlab
     volumes:
       - mysql_data:/var/lib/mysql
 
+  openlab_be:
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/openlab
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: hungtran
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+
 volumes:
   mysql_data:
-    driver: local
