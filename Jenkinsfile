@@ -47,27 +47,21 @@ pipeline {
             }
         }
 
-
-        stage('Remove Previous Docker Image'){
-            steps{
-                script{
+        stage('Remove Previous Docker Image') {
+            steps {
+                script {
                     def imageName = 'openlab_be'
                     def imageTag = 'latest'
 
                     def dockerImageId = sh(
-                        script: "sudo docker images -q $imageName:$imageTag",
+                        script: "sudo docker images -q ${imageName}:${imageTag}",
                         returnStdout: true
                     ).trim()
 
                     if (dockerImageId) {
-                        def dockerImageRepo = sh(
-                            script: "sudo docker inspect --format='{{.RepoTags}} $dockerImageId | cut -d ':' -f1 | cut -d '[' -f2 | cut -d '\"' -f2",
-                            returnStdout: true
-                        ).trim()
-
-                        sh "sudo docker rmi -f \$(sudo docker images -q $dockerImageRepo/$imageName:$imageTag)"
+                        sh "sudo docker rmi -f ${dockerImageId}"
                     } else {
-                        echo "Docker image $imageName:$imageTag does not exist"
+                        echo "Docker image ${imageName}:${imageTag} does not exist"
                     }
                 }
             }
@@ -78,8 +72,8 @@ pipeline {
                 sh 'sudo docker run -d --name openlab_be -p 8081:8081 openlab_be:latest'
             }
         }
-
     }
+
     post {
         always {
             cleanWs()
