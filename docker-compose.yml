@@ -13,3 +13,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: hungtran
     networks:
       - openlab_network
+
+networks:
+  openlab_network:
+    driver: bridge
