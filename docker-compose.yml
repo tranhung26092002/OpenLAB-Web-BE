@@ -1,12 +1,27 @@
-version: '3.8'
+version: '3'
+
 services:
-  openlab_be:
+  myapp:
     build: .
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/openlab
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: hungtran
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: true
     ports:
       - "8081:8081"
+    container_name: openlab_fe
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATESOURCE_URL: jdbc:mysql://db:3306/openlab
+      SPRING_DATESOURCE_USERNAME: root
+      SPRING_DATESOURCE_PASSWORD: hungtran
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    container_name: db
+    ports: 
+      - "3307:3306"
+    restart: always
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: hungtran
+      MYSQL_DB: openlab
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
