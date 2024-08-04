@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/tranhung26092002/OpenLAB-Web-BE.git'
+                git 'https://github.com/tranhung26092002/OpenLAB-Web-BE.git'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'bash ./mvnw clean install -Dmaven.test.skip=true -Dspring-boot.repackage.main-class=edu.ptit.openlab'
+                sh './mvnw clean install -Dmaven.test.skip=true -Dspring-boot.repackage.main-class=edu.ptit.openlab'
             }
         }
 
@@ -32,7 +32,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t openlab_be .'
+                    sh 'sudo docker build -t openlab_be:latest .'
                 }
             }
         }
@@ -47,38 +47,33 @@ pipeline {
             }
         }
 
-        stage('Remove Previous Docker Image'){
-            steps{
-                script{
+        stage('Remove Previous Docker Image') {
+            steps {
+                script {
                     def imageName = 'openlab_be'
                     def imageTag = 'latest'
 
                     def dockerImageId = sh(
-                        script: "sudo docker images -q $imageName:$imageTag",
+                        script: "sudo docker images -q ${imageName}:${imageTag}",
                         returnStdout: true
                     ).trim()
 
                     if (dockerImageId) {
-                        def dockerImageRepo = sh(
-                            script: "sudo docker inspect --format='{{.RepoTags}} $dockerImageId | cut -d ':' -f1 | cut -d '[' -f2 | cut -d '\"' -f2",
-                            returnStdout: true
-                        ).trim()
-
-                        sh "sudo docker rmi -f \$(sudo docker images -q $dockerImageRepo/$imageName:$imageTag)"
+                        sh "sudo docker rmi -f ${dockerImageId}"
                     } else {
-                        echo "Docker image $imageName:$imageTag does not exist"
+                        echo "Docker image ${imageName}:${imageTag} does not exist"
                     }
                 }
             }
         }
 
-        stage ('Creating and Deploy Container') {
+        stage('Create and Deploy Container') {
             steps {
-                sh 'sudo docker run -d --name openlab_be -p 8081:8081 openlab_be'
-                // sh 'sudo docker-compose up --force-recreate -d'
+                sh 'sudo docker run -d --name openlab_be -p 8081:8081 openlab_be:latest'
             }
         }
     }
+
     post {
         always {
             cleanWs()
