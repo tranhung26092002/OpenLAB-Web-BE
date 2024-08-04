@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   myapp:
     build: .
@@ -8,11 +6,12 @@ services:
     container_name: openlab_fe
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATESOURCE_URL: jdbc:mysql://db:3306/openlab
-      SPRING_DATESOURCE_USERNAME: root
-      SPRING_DATESOURCE_PASSWORD: hungtran
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/openlab
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: hungtran
     depends_on:
       - db
+
   db:
     image: mysql:8.0
     container_name: db
@@ -20,8 +19,12 @@ services:
       - "3307:3306"
     restart: always
     environment:
+      MYSQL_ROOT_PASSWORD: hungtran
+      MYSQL_DATABASE: openlab
       MYSQL_USER: root
       MYSQL_PASSWORD: hungtran
-      MYSQL_DB: openlab
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
+    driver: local
