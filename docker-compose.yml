@@ -13,18 +13,3 @@ services:
       SPRING_DATASOURCE_PASSWORD: hungtran
     networks:
       - openlab_network
-
-  mysql:
-    image: mysql:8.0
-    container_name: openlab_mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: hungtran
-      MYSQL_DATABASE: openlab
-    ports:
-      - "3306:3306"
-    networks:
-      - openlab_network
-
-networks:
-  openlab_network:
-    driver: bridge
