@@ -50,7 +50,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    public BaseResponse createLesson( MultipartFile file, String title, Long courseId) {
+    public BaseResponse createLesson( MultipartFile file, String title, String document, String description, Long courseId) {
         if(!storageService.isVideoFileWithTika(file)) {
             return new BaseResponse(400, "File is not a valid video type", null);
         }
@@ -66,6 +66,8 @@ public class LessonServiceImpl implements LessonService {
             Lesson lesson = new Lesson();
             lesson.setTitleLesson(title);
             lesson.setUrlVideo(savedFilePath);
+            lesson.setUrlDocument(document);
+            lesson.setDescription(description);
             lesson.setIsCompleted(false);
             lesson.setCourse(course);
 
@@ -79,7 +81,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    public BaseResponse updateLesson(MultipartFile file, String title, Long lessonId, Long courseId) {
+    public BaseResponse updateLesson(MultipartFile file, String title, String document, String description, Long lessonId, Long courseId) {
         if(!storageService.isVideoFileWithTika(file)){
             return new BaseResponse(400, "File is not a valid video type", null);
         }
@@ -97,6 +99,8 @@ public class LessonServiceImpl implements LessonService {
             }
 
             lesson.setTitleLesson(title);
+            lesson.setUrlDocument(document);
+            lesson.setDescription(description);
             lesson.setUrlVideo(savedFilePath);
             lesson.setIsCompleted(false);
 

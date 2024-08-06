@@ -28,6 +28,13 @@ public class Lesson {
     @Column(name = "url_video", nullable = false)
     private String urlVideo;  // Đổi thành String vì URL có thể gặp vấn đề với một số trường hợp
 
+    @Column(name = "url_document", nullable = false)
+    private String urlDocument;  // Đổi thành String vì URL có thể gặp vấn đề với một số trường hợp
+
+    @Lob
+    @Column(name = "description", columnDefinition = "TEXT")  // Hỗ trợ lưu trữ văn bản dài
+    private String description;
+
     @Column(name = "is_completed")  // Thêm nullable = false để đảm bảo giá trị không bị bỏ trống
     private Boolean isCompleted = false;
 

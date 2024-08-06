@@ -14,5 +14,7 @@ public class LessonDTO {
     private Long courseId;
     private String titleLesson;
     private MultipartFile urlVideo;
+    private String urlDocument;
+    private String description;
     private Boolean isCompleted;
 }

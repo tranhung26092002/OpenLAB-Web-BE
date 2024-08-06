@@ -12,9 +12,9 @@ public interface LessonService {
 
     BaseResponse getAllLessonOfCourse(Long courseId);
 
-    BaseResponse createLesson(MultipartFile file, String title, Long courseId);
+    BaseResponse createLesson(MultipartFile file, String title, String document, String description, Long courseId);
 
-    BaseResponse updateLesson(MultipartFile file, String title, Long lessonId, Long courseId);
+    BaseResponse updateLesson(MultipartFile file, String title, String document, String description, Long lessonId, Long courseId);
 
     BaseResponse deleteLesson(Long lessonId);
 }

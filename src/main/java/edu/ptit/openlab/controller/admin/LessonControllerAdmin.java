@@ -20,9 +20,11 @@ public class LessonControllerAdmin {
     public ResponseEntity<BaseResponse> createLesson(
             @RequestParam("file") MultipartFile file,
             @RequestParam("title") String title,
+            @RequestParam("document") String document,
+            @RequestParam("description") String description,
             @RequestParam("courseId") Long courseId
     ){
-        BaseResponse response = lessonService.createLesson(file, title, courseId);
+        BaseResponse response = lessonService.createLesson(file, title, document, description, courseId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
@@ -30,10 +32,12 @@ public class LessonControllerAdmin {
     public ResponseEntity<BaseResponse> updateLesson(
             @RequestParam(value = "file",required = false) MultipartFile file,
             @RequestParam("title") String title,
+            @RequestParam("document") String document,
+            @RequestParam("description") String description,
             @PathVariable("lessonId") Long lessonId,
             @PathVariable("courseId") Long courseId
     ) {
-        BaseResponse response = lessonService.updateLesson(file, title, lessonId, courseId);
+        BaseResponse response = lessonService.updateLesson(file, title, document, description, lessonId, courseId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
