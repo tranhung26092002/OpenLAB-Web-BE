@@ -64,7 +64,7 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     private List<User> users;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lesson> lessons;
 
     @PrePersist
