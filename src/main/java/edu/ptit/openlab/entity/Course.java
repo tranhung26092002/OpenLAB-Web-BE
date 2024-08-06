@@ -65,6 +65,7 @@ public class Course {
     private List<User> users;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Lesson> lessons;
 
     @PrePersist
