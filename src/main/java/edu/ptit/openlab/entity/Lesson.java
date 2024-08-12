@@ -40,7 +40,6 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
-    @JsonIgnore
     private Course course;
 
     @Temporal(TemporalType.TIMESTAMP)

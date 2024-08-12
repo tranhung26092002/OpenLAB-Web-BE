@@ -121,6 +121,7 @@ public class CourseServiceImpl implements CourseService {
     public BaseResponse deleteCourse(Long id) {
         try {
             if (courseRepository.existsById(id)) {
+                courseRepository.deleteUserCoursesByCourseId(id);
                 courseRepository.deleteById(id);
 
                 return new BaseResponse(200, "Course deleted successfully", null );

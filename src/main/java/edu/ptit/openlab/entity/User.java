@@ -48,7 +48,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    @JsonIgnore
     private List<Course> courses = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)
