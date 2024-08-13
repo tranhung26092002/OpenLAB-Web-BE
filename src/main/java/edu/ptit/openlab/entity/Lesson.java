@@ -38,6 +38,7 @@ public class Lesson {
     @Column(name = "is_completed")  // Thêm nullable = false để đảm bảo giá trị không bị bỏ trống
     private Boolean isCompleted = false;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
