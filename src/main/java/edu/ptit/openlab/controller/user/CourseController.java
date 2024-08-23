@@ -1,6 +1,5 @@
 package edu.ptit.openlab.controller.user;
 
-import edu.ptit.openlab.DTO.CourseDTO;
 import edu.ptit.openlab.payload.response.BaseResponse;
 import edu.ptit.openlab.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;

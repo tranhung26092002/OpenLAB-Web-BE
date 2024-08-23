@@ -1,7 +1,6 @@
 package edu.ptit.openlab.service;
 
 import org.apache.tika.Tika;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -10,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -62,7 +60,7 @@ public class StorageService {
             if (!Files.exists(root)) {
                 Files.createDirectories(root);
             }
-            //Để tên tệp là thời gian hiện tại + tên file gốc
+            // Để tên tệp là thời gian hiện tại + tên file gốc
             newFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
             Files.copy(file.getInputStream(), root.resolve(newFileName), StandardCopyOption.REPLACE_EXISTING);
 
@@ -74,7 +72,7 @@ public class StorageService {
 
     }
 
-    public boolean isVideoFileWithTika(MultipartFile file){
+    public boolean isVideoFileWithTika(MultipartFile file) {
         Tika tika = new Tika();
         try {
             // Xác định loại MIME của tệp
@@ -82,7 +80,7 @@ public class StorageService {
 
             // Kiểm tra xem loại MIME có bắt đầu với "/"video
             return detectedType.startsWith("video/");
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -93,16 +91,15 @@ public class StorageService {
             root = Paths.get(folderPath);
             Path pathFile = root.resolve(fileName);
             Resource resource = new UrlResource(pathFile.toUri());
-            if(resource.exists()){
+            if (resource.exists()) {
                 return resource;
             } else {
                 throw new Exception("File not found: " + fileName);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Lỗi load file " + e.getLocalizedMessage());
             throw e;
         }
     }
 
 }
-
