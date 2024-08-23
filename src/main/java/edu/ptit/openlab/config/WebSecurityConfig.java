@@ -64,16 +64,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().and()  // Kích hoạt CORS và áp dụng các cấu hình mặc định cho CORS.
-                .csrf().disable()  // Vô hiệu hoá bảo vệ CSRF (Cross-Site Request Forgery).
-                .authorizeRequests()  // Bắt đầu cấu hình các quy tắc uỷ quyền cho các yêu cầu HTTP.
+                .cors().and() // Kích hoạt CORS và áp dụng các cấu hình mặc định cho CORS.
+                .csrf().disable() // Vô hiệu hoá bảo vệ CSRF (Cross-Site Request Forgery).
+                .authorizeRequests() // Bắt đầu cấu hình các quy tắc uỷ quyền cho các yêu cầu HTTP.
                 .antMatchers("/api/images/**",
                         "/api/upload/video/**",
                         "/api/course/**",
                         "/api/lesson/**",
-                        "/auth/**",
-                        "/auth/login/**",
-                        "/auth/register/**",
+                        "/api/auth/**",
+                        "/api/auth/login/**",
+                        "/api/auth/register/**",
                         "/swagger-ui/**",
                         "/api-docs/**",
                         "/swagger-resources/**",
@@ -81,13 +81,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/configuration/**",
                         "/swagger*/**",
                         "/webjars/springfox-swagger-ui/**")
-                .permitAll()  // Cho phép tất cả các yêu cầu đến các đường dẫn trên mà không cần xác thực.
-                .anyRequest().authenticated()  // Yêu cầu xác thực cho tất cả các yêu cầu khác.
+                .permitAll() // Cho phép tất cả các yêu cầu đến các đường dẫn trên mà không cần xác thực.
+                .anyRequest().authenticated() // Yêu cầu xác thực cho tất cả các yêu cầu khác.
                 .and()
                 // Filter cho việc đăng nhập
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), authenticationService))
                 // Filter cho việc xác thực token
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), authenticationService))
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);  // Thiết lập chế độ quản lý phiên làm việc là không trạng thái (stateless).
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Thiết lập chế độ quản lý
+                                                                                             // phiên làm việc là không
+                                                                                             // trạng thái (stateless).
     }
 }
