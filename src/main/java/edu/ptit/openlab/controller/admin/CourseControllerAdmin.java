@@ -36,8 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/course")
-//@PreAuthorize("hasRole('ROLE_ADMIN')")
+@RequestMapping("/api/admin/course")
+// @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CourseControllerAdmin {
     @Autowired
     private CourseService courseService;
@@ -47,8 +47,8 @@ public class CourseControllerAdmin {
 
     private String getCorrectExtension(byte[] imageData) {
         // First bytes of different image formats
-        byte[] jpeg = new byte[] {(byte) 0xFF, (byte) 0xD8};
-        byte[] png = new byte[] {(byte) 0x89, (byte) 0x50};
+        byte[] jpeg = new byte[] { (byte) 0xFF, (byte) 0xD8 };
+        byte[] png = new byte[] { (byte) 0x89, (byte) 0x50 };
 
         if (imageData.length > 1) {
             if (imageData[0] == jpeg[0] && imageData[1] == jpeg[1]) {
@@ -67,7 +67,6 @@ public class CourseControllerAdmin {
             byte[] bytes = pictureData.getData();
             String ext = this.getCorrectExtension(bytes);
             String imageName = new File(pictureData.getPackagePart().getPartName().getName()).getName();
-
 
             MultipartFile imageFile = new MockMultipartFile(imageName, imageName, "image/" + ext, bytes);
             imageFiles.add(imageFile);
@@ -103,8 +102,7 @@ public class CourseControllerAdmin {
             @RequestParam("typeProduct") String typeProduct,
             @RequestParam("isPublish") boolean isPublish,
             @RequestParam("description") String description,
-            @RequestParam("originalPrice") String originalPrice
-    ) {
+            @RequestParam("originalPrice") String originalPrice) {
         try {
             // Lưu file vào một thư mục cụ thể
             String fileName = storageService.uploadImageToFileSystem(thumbnail);
@@ -136,9 +134,7 @@ public class CourseControllerAdmin {
         }
     }
 
-
-
-    @PutMapping("update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateCourse(
             @PathVariable Long id,
             @RequestParam("subId") String subId,
@@ -148,8 +144,7 @@ public class CourseControllerAdmin {
             @RequestParam("typeProduct") String typeProduct,
             @RequestParam("isPublish") boolean isPublish,
             @RequestParam("description") String description,
-            @RequestParam("originalPrice") String originalPrice
-    ) {
+            @RequestParam("originalPrice") String originalPrice) {
         BaseResponse fetchedKhoiCamBien = courseService.getCourse(id);
         if (fetchedKhoiCamBien.getStatus() != 200) {
             return new ResponseEntity<>(fetchedKhoiCamBien.getMessage(), HttpStatus.NOT_FOUND);
@@ -179,12 +174,12 @@ public class CourseControllerAdmin {
                     ? new ResponseEntity<>(updateResponse.getData(), HttpStatus.OK)
                     : new ResponseEntity<>(updateResponse.getMessage(), HttpStatus.BAD_REQUEST);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCourse(@PathVariable long id) {
         BaseResponse deleteResponse = courseService.deleteCourse(id);
         if (deleteResponse.getStatus() == 200) {
@@ -194,4 +189,3 @@ public class CourseControllerAdmin {
         }
     }
 }
-

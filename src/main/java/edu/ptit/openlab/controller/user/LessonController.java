@@ -9,19 +9,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/lesson")
+@RequestMapping("/api/lesson")
 public class LessonController {
     @Autowired
     private LessonService lessonService;
 
     @GetMapping("/all")
-    public ResponseEntity<BaseResponse> getAllLesson(){
+    public ResponseEntity<BaseResponse> getAllLesson() {
         BaseResponse response = lessonService.getAllLesson();
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
     @GetMapping("/all/{courseId}")
-    public ResponseEntity<BaseResponse> getAllLessonOfCourse(@PathVariable Long courseId){
+    public ResponseEntity<BaseResponse> getAllLessonOfCourse(@PathVariable Long courseId) {
         BaseResponse response = lessonService.getAllLessonOfCourse(courseId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }

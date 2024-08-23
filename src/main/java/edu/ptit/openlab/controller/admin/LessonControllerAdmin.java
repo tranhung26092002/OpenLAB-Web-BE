@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/admin/lesson")
-//@PreAuthorize("hasRole('ROLE_ADMIN')")
+@RequestMapping("api/admin/lesson")
+// @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class LessonControllerAdmin {
     @Autowired
     private LessonService lessonService;
@@ -22,21 +22,19 @@ public class LessonControllerAdmin {
             @RequestParam("title") String title,
             @RequestParam("document") String document,
             @RequestParam("description") String description,
-            @RequestParam("courseId") Long courseId
-    ){
+            @RequestParam("courseId") Long courseId) {
         BaseResponse response = lessonService.createLesson(file, title, document, description, courseId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
     @PutMapping("/update/{lessonId}/{courseId}")
     public ResponseEntity<BaseResponse> updateLesson(
-            @RequestParam(value = "file",required = false) MultipartFile file,
+            @RequestParam(value = "file", required = false) MultipartFile file,
             @RequestParam("title") String title,
             @RequestParam("document") String document,
             @RequestParam("description") String description,
             @PathVariable("lessonId") Long lessonId,
-            @PathVariable("courseId") Long courseId
-    ) {
+            @PathVariable("courseId") Long courseId) {
         BaseResponse response = lessonService.updateLesson(file, title, document, description, lessonId, courseId);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
