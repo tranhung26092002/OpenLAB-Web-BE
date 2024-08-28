@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openlab_be
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/openlab
+      SPRING_DATASOURCE_USERNAME: hungtran
+      SPRING_DATASOURCE_PASSWORD: hungtran
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: openlab_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: openlab
+      MYSQL_USER: hungtran
+      MYSQL_PASSWORD: hungtran
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

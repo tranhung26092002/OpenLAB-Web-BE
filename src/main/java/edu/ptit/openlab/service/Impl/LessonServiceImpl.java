@@ -1,6 +1,5 @@
 package edu.ptit.openlab.service.Impl;
 
-import edu.ptit.openlab.DTO.LessonDTO;
 import edu.ptit.openlab.entity.Course;
 import edu.ptit.openlab.entity.Lesson;
 import edu.ptit.openlab.payload.response.BaseResponse;
@@ -47,11 +46,11 @@ public class LessonServiceImpl implements LessonService {
         }
     }
 
-
     @Override
     @Transactional
-    public BaseResponse createLesson( MultipartFile file, String title, String document, String description, Long courseId) {
-        if(!storageService.isVideoFileWithTika(file)) {
+    public BaseResponse createLesson(MultipartFile file, String title, String document, String description,
+            Long courseId) {
+        if (!storageService.isVideoFileWithTika(file)) {
             return new BaseResponse(400, "File is not a valid video type", null);
         }
 
@@ -81,8 +80,9 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    public BaseResponse updateLesson(MultipartFile file, String title, String document, String description, Long lessonId, Long courseId) {
-        if(!storageService.isVideoFileWithTika(file)){
+    public BaseResponse updateLesson(MultipartFile file, String title, String document, String description,
+            Long lessonId, Long courseId) {
+        if (!storageService.isVideoFileWithTika(file)) {
             return new BaseResponse(400, "File is not a valid video type", null);
         }
         String savedFilePath = storageService.saveFile(file);

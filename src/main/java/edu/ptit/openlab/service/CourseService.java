@@ -1,6 +1,5 @@
 package edu.ptit.openlab.service;
 
-import edu.ptit.openlab.DTO.CourseDTO;
 import edu.ptit.openlab.entity.Course;
 import edu.ptit.openlab.payload.response.BaseResponse;
 import org.springframework.stereotype.Service;
@@ -22,4 +21,3 @@ public interface CourseService {
 
     BaseResponse deleteCourse(Long id);
 }
-

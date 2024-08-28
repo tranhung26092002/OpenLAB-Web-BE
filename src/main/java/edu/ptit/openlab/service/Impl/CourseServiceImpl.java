@@ -1,6 +1,5 @@
 package edu.ptit.openlab.service.Impl;
 
-import edu.ptit.openlab.DTO.CourseDTO;
 import edu.ptit.openlab.DTO.CourseResponseDTO;
 import edu.ptit.openlab.entity.Course;
 import edu.ptit.openlab.mapper.CourseMapper;
@@ -27,12 +26,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
-    public BaseResponse save(Course course){
+    public BaseResponse save(Course course) {
         try {
             course = courseRepository.save(course);
-            return new BaseResponse(200,"Saved successfully", course);
-        } catch(Exception e){
-            return new BaseResponse(400,"Failed save", null);
+            return new BaseResponse(200, "Saved successfully", course);
+        } catch (Exception e) {
+            return new BaseResponse(400, "Failed save", null);
         }
     }
 
@@ -40,9 +39,9 @@ public class CourseServiceImpl implements CourseService {
     @Transactional(readOnly = true)
     public BaseResponse getCourse(Long id) {
         Optional<Course> optionalCourse = courseRepository.findById(id);
-        if(optionalCourse.isPresent()){
+        if (optionalCourse.isPresent()) {
             return new BaseResponse(200, "Retrieved successfully", optionalCourse.get());
-        }else{
+        } else {
             return new BaseResponse(404, "Course not found", null);
         }
     }
@@ -50,10 +49,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public BaseResponse getCoursePaginated(int page, int size) {
-        try{
+        try {
             Page<Course> courses = courseRepository.findAll(PageRequest.of(page, size));
             return new BaseResponse(200, "Retrieved successfully", courses);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new BaseResponse(500, "Error retrieving Course", null);
         }
     }
@@ -61,7 +60,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional(readOnly = true)
     public BaseResponse getAllCourse() {
-        try{
+        try {
             List<Course> courseList = courseRepository.findAll();
 
             List<CourseResponseDTO> courseDTOList = courseList.stream()
@@ -69,7 +68,7 @@ public class CourseServiceImpl implements CourseService {
                     .collect(Collectors.toList());
 
             return new BaseResponse(200, "Retrieved successfully", courseDTOList);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new BaseResponse(500, "Error retrieving all Course", null);
         }
     }
@@ -77,14 +76,14 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public BaseResponse searchListCourse(String search) {
-        try{
+        try {
             List<Course> courseList = courseRepository.searchCourse(search);
-            if(courseList.isEmpty()){
+            if (courseList.isEmpty()) {
                 return new BaseResponse(200, "No results found for the search query", null);
-            }else{
+            } else {
                 return new BaseResponse(200, "Search results retrieved successfully", courseList);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             return new BaseResponse(500, "Error processing search", null);
         }
     }
@@ -124,7 +123,7 @@ public class CourseServiceImpl implements CourseService {
                 courseRepository.deleteUserCoursesByCourseId(id);
                 courseRepository.deleteById(id);
 
-                return new BaseResponse(200, "Course deleted successfully", null );
+                return new BaseResponse(200, "Course deleted successfully", null);
             } else {
                 return new BaseResponse(404, "Course not found", null);
             }
