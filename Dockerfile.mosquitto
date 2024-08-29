@@ -1,0 +1,18 @@
+# Sử dụng image Mosquitto chính thức làm base
+FROM eclipse-mosquitto:latest
+
+# Tạo thư mục để chứa file cấu hình và danh sách user
+RUN mkdir -p /mosquitto/config
+
+# Copy file cấu hình mosquitto.conf vào container
+COPY mosquitto_config/mosquitto.conf /mosquitto/config/mosquitto.conf
+
+# Copy danh sách user vào container
+COPY userlist.txt /mosquitto/config/userlist.txt
+
+# Script khởi động để tạo user và khởi động Mosquitto
+COPY init.sh /mosquitto/init.sh
+RUN chmod +x /mosquitto/init.sh
+
+# Chạy script tạo user và khởi động Mosquitto
+CMD ["/mosquitto/init.sh"]
