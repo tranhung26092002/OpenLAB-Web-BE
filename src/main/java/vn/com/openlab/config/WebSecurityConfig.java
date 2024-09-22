@@ -35,7 +35,7 @@ public class WebSecurityConfig {
     private String apiPrefix;
 
     @Value("${domain.protocol}")
-    private List<String> domainProtocol;
+    private String domainProtocol;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -104,7 +104,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(domainProtocol); // Define allowed origins
+        configuration.setAllowedOrigins(List.of(domainProtocol, "http://14.225.255.177:8081")); // Define allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true); // Nếu có cần truyền Cookie
