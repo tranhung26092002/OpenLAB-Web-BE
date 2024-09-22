@@ -32,10 +32,10 @@ import org.springframework.context.annotation.Configuration;
                         description = "Local Environment",
                             url = "http://localhost:8081"
                 ),
-//                @Server(
-//                        description = "Pro Environment",
-//                        url = "http://tiens-mbp:8081"
-//                ),
+               @Server(
+                       description = "Pro Environment",
+                       url = "https://openlab.com.vn"
+               ),
 
         },
         security = {
