@@ -63,7 +63,7 @@ api:
   prefix: /api/v1
 
 domain:
-  protocol: http://localhost:${server.port}
+  protocol: https://openlab.com.vn/
 
 jwt:
   expiration: 2592000
