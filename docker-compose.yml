@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # MySQL Service
+  mysql:
+    image: mysql:8.0
+    container_name: openlab-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: openlabbusiness
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - openlab-network
+
+  # Spring Boot Service
+  springboot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openlab-springboot
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/openlabbusiness
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET}
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+    networks:
+      - openlab-network
+
+# Volumes để lưu trữ dữ liệu MySQL
+volumes:
+  mysql_data:
+
+# Network để liên kết giữa các service
+networks:
+  openlab-network:
+    driver: bridge
