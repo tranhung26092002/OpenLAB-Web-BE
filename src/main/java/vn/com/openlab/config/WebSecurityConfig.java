@@ -107,6 +107,9 @@ public class WebSecurityConfig {
         configuration.setAllowedOrigins(List.of(domainProtocol)); // Define allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true); // Nếu có cần truyền Cookie
+        configuration.setExposedHeaders(List.of("Authorization")); // Nếu cần trả về các header cụ thể
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
