@@ -28,15 +28,14 @@ import org.springframework.context.annotation.Configuration;
                 termsOfService = "Term of service"
         ),
         servers = {
-                @Server(
-                        description = "Local Environment",
-                            url = "http://localhost:8081"
-                ),
                @Server(
-                       description = "Pro Environment",
-                       url = "https://openlab.com.vn"
+                        description = "Pro Environment",
+                        url = "https://openlab.com.vn"
                ),
-
+               @Server(
+                        description = "Local Environment",
+                        url = "http://localhost:8081"
+                ),
         },
         security = {
                 @SecurityRequirement(
