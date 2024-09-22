@@ -63,7 +63,9 @@ api:
   prefix: /api/v1
 
 domain:
-  protocol: https://openlab.com.vn
+  protocol:
+    - https://openlab.com.vn
+    - http://14.225.255.177:8081
 
 jwt:
   expiration: 2592000
