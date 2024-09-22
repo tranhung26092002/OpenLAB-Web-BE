@@ -33,6 +33,11 @@ import org.springframework.context.annotation.Configuration;
                         url = "https://openlab.com.vn"
                ),
                @Server(
+                        description = "Swagger Environment",
+                        url = "http://14.225.255.177:8081"
+                ),
+
+                @Server(
                         description = "Local Environment",
                         url = "http://localhost:8081"
                 ),
