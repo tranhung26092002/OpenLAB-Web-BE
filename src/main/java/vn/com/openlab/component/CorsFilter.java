@@ -20,7 +20,12 @@ public class CorsFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain
     ) throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        String origin = request.getHeader("Origin");
+
+        // Chỉ cho phép các origin cụ thể
+        if ("http://localhost:3000".equals(origin) || "https://openlab.com.vn".equals(origin)) {
+            response.setHeader("Access-Control-Allow-Origin", origin);
+        }
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600"); // 1h
         response.setHeader("Access-Control-Allow-Headers", "authorization, content-type, accept, x-requested-with");
