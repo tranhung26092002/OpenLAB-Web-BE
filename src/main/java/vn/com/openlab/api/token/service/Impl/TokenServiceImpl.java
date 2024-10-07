@@ -1,14 +1,14 @@
-package vn.com.openlab.service.Impl;
+package vn.com.openlab.api.token.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.com.openlab.component.TranslateMessages;
-import vn.com.openlab.model.Token;
-import vn.com.openlab.repository.TokenRepository;
-import vn.com.openlab.service.TokenService;
-import vn.com.openlab.model.User;
+import vn.com.openlab.api.token.model.Token;
+import vn.com.openlab.api.token.repository.TokenRepository;
+import vn.com.openlab.api.token.service.TokenService;
+import vn.com.openlab.api.user.model.User;
 import vn.com.openlab.helper.exception.payload.DataNotFoundException;
 import vn.com.openlab.utils.object.MessageKeys;
 

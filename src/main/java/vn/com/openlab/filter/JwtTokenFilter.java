@@ -39,13 +39,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                                     @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
         try {
-//            // Bỏ qua token cho các yêu cầu OAuth2 (khi đã có authentication qua OAuth2)
-//            if (SecurityContextHolder.getContext().getAuthentication() != null &&
-//                    SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof org.springframework.security.oauth2.core.user.DefaultOAuth2User) {
-//                filterChain.doFilter(request, response); // bypass JWT processing for OAuth2 authenticated users
-//                return;
-//            }
-
             if (isByPassToken(request)) {
                 filterChain.doFilter(request, response); // enable bypass
                 return;

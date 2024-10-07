@@ -1,6 +1,6 @@
-package vn.com.openlab.service;
+package vn.com.openlab.api.role.service;
 
-import vn.com.openlab.model.Role;
+import vn.com.openlab.api.role.model.Role;
 
 import java.util.List;
 

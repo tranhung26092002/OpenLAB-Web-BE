@@ -1,7 +1,7 @@
-package vn.com.openlab.repository;
+package vn.com.openlab.api.coupon.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import vn.com.openlab.model.Coupon;
+import vn.com.openlab.api.coupon.model.Coupon;
 
 import java.util.Optional;
 

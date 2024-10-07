@@ -1,11 +1,10 @@
-package vn.com.openlab.repository;
+package vn.com.openlab.api.product.repository;
 
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import vn.com.openlab.model.Product;
-import vn.com.openlab.response.product.ProductResponse;
+import vn.com.openlab.api.product.model.Product;
 import vn.com.openlab.utils.object.ConfixSql;
 
 import java.util.List;

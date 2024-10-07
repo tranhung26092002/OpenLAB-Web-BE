@@ -1,4 +1,4 @@
-package vn.com.openlab.service.Impl;
+package vn.com.openlab.api.product.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -7,19 +7,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vn.com.openlab.api.category.model.Category;
+import vn.com.openlab.api.product.model.Product;
+import vn.com.openlab.api.product.model.ProductImage;
+import vn.com.openlab.api.user.model.User;
 import vn.com.openlab.component.TranslateMessages;
 import vn.com.openlab.api.product.dto.ProductDTO;
 import vn.com.openlab.api.product.dto.ProductImageDTO;
 import vn.com.openlab.helper.exception.payload.DataNotFoundException;
 import vn.com.openlab.helper.exception.payload.InvalidParamException;
-import vn.com.openlab.mapper.ProductMapper;
-import vn.com.openlab.model.*;
-import vn.com.openlab.repository.CategoryRepository;
-import vn.com.openlab.repository.ProductImageRepository;
-import vn.com.openlab.repository.ProductRepository;
-import vn.com.openlab.repository.UserRepository;
-import vn.com.openlab.response.product.ProductResponse;
-import vn.com.openlab.service.ProductService;
+import vn.com.openlab.api.product.mapper.ProductMapper;
+import vn.com.openlab.api.category.repository.CategoryRepository;
+import vn.com.openlab.api.product.repository.ProductImageRepository;
+import vn.com.openlab.api.product.repository.ProductRepository;
+import vn.com.openlab.api.user.repository.UserRepository;
+import vn.com.openlab.api.product.response.ProductResponse;
+import vn.com.openlab.api.product.service.ProductService;
 import vn.com.openlab.utils.object.MessageKeys;
 
 import java.util.List;

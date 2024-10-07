@@ -1,12 +1,12 @@
-package vn.com.openlab.service.Impl;
+package vn.com.openlab.api.coupon.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import vn.com.openlab.model.Coupon;
-import vn.com.openlab.model.CouponCondition;
-import vn.com.openlab.repository.CouponConditionRepository;
-import vn.com.openlab.repository.CouponRespository;
-import vn.com.openlab.service.CouponService;
+import vn.com.openlab.api.coupon.model.Coupon;
+import vn.com.openlab.api.coupon.model.CouponCondition;
+import vn.com.openlab.api.coupon.repository.CouponConditionRepository;
+import vn.com.openlab.api.coupon.repository.CouponRespository;
+import vn.com.openlab.api.coupon.service.CouponService;
 import vn.com.openlab.utils.object.Const;
 
 import java.time.LocalDate;

@@ -1,11 +1,11 @@
-package vn.com.openlab.response.order;
+package vn.com.openlab.api.order.response.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import lombok.*;
+import vn.com.openlab.api.order.response.order_detail.OrderDetailResponse;
 import vn.com.openlab.helper.base.response.BaseResponse;
-import vn.com.openlab.model.Order;
-import vn.com.openlab.response.order_detail.OrderDetailResponse;
+import vn.com.openlab.api.order.model.Order;
 
 import java.time.LocalDate;
 import java.util.Date;

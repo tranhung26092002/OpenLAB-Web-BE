@@ -1,4 +1,4 @@
-package vn.com.openlab.controller;
+package vn.com.openlab.api.order;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import vn.com.openlab.component.TranslateMessages;
 import vn.com.openlab.api.order.dto.OrderDetailDTO;
 import vn.com.openlab.helper.base.response.ApiResponse;
-import vn.com.openlab.model.OrderDetail;
-import vn.com.openlab.response.order_detail.OrderDetailResponse;
-import vn.com.openlab.service.OrderDetailService;
+import vn.com.openlab.api.order.model.OrderDetail;
+import vn.com.openlab.api.order.response.order_detail.OrderDetailResponse;
+import vn.com.openlab.api.order.service.OrderDetailService;
 import vn.com.openlab.utils.object.MessageKeys;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public class OrderDetailController extends TranslateMessages {
             OrderDetail newOrderDetail = orderDetailService.createOrderDetail(orderDetailDTO);
             return ResponseEntity.ok(ApiResponse.builder().success(true)
                     .message(translate(MessageKeys.CREATE_ORDER_DETAILS_SUCCESS))
-                    .payload(OrderDetailResponse.fromOrderDetail(newOrderDetail)).build());
+                    .data(OrderDetailResponse.fromOrderDetail(newOrderDetail)).build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     ApiResponse.builder()
@@ -60,7 +60,7 @@ public class OrderDetailController extends TranslateMessages {
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderDetail(@Valid @PathVariable("id") Long id) throws Exception {
         OrderDetail orderDetail = orderDetailService.getOrderDetail(id);
-        return ResponseEntity.ok(ApiResponse.builder().success(true).payload(OrderDetailResponse.fromOrderDetail(orderDetail)).build());
+        return ResponseEntity.ok(ApiResponse.builder().success(true).data(OrderDetailResponse.fromOrderDetail(orderDetail)).build());
         // return ResponseEntity.ok(OrderDetailResponse.fromOrderDetail(orderDetail));
     }
 
@@ -71,7 +71,7 @@ public class OrderDetailController extends TranslateMessages {
                 .stream()
                 .map(OrderDetailResponse::fromOrderDetail)
                 .toList();
-        return ResponseEntity.ok(ApiResponse.builder().success(true).payload(orderDetailResponses).build());
+        return ResponseEntity.ok(ApiResponse.builder().success(true).data(orderDetailResponses).build());
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -82,7 +82,7 @@ public class OrderDetailController extends TranslateMessages {
     ) {
         try {
             OrderDetail orderDetail = orderDetailService.updateOrderDetail(id, orderDetailDTO);
-            return ResponseEntity.ok(ApiResponse.builder().success(true).payload(OrderDetailResponse.fromOrderDetail(orderDetail)).build());
+            return ResponseEntity.ok(ApiResponse.builder().success(true).data(OrderDetailResponse.fromOrderDetail(orderDetail)).build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder().error(e.getMessage()).build());
         }

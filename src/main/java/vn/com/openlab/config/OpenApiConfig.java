@@ -36,6 +36,14 @@ import org.springframework.context.annotation.Configuration;
                         description = "Pro Environment",
                         url = "https://openlab.com.vn"
                 ),
+                @Server(
+                        description = "Pro Environment",
+                        url = "http://localhost:8081"
+                ),
+                @Server(
+                        description = "Pro Environment",
+                        url = "http://localhost:3000"
+                ),
         },
         security = {
                 @SecurityRequirement(

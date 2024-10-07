@@ -1,4 +1,4 @@
-package vn.com.openlab.controller;
+package vn.com.openlab.api.category;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import vn.com.openlab.component.TranslateMessages;
 import vn.com.openlab.api.category.dto.CategoryDTO;
 import vn.com.openlab.helper.base.response.ApiResponse;
-import vn.com.openlab.model.Category;
-import vn.com.openlab.service.CategoryService;
+import vn.com.openlab.api.category.model.Category;
+import vn.com.openlab.api.category.service.CategoryService;
 import vn.com.openlab.utils.object.MessageKeys;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class CategoryController extends TranslateMessages {
 
             return ResponseEntity.ok(ApiResponse.builder().success(true)
                     .message(translate(MessageKeys.CREATE_CATEGORIES_SUCCESS))
-                    .payload(newCategory)
+                    .data(newCategory)
                     .build());
         } catch (Exception e) {
             return ResponseEntity.ok(ApiResponse.builder()
@@ -67,7 +67,7 @@ public class CategoryController extends TranslateMessages {
 //        this.kafkaTemplate.send(Const.KAFKA_TOPIC_GET_ALL_CATEGORY, categories);
         return ResponseEntity.ok(ApiResponse.builder()
                 .success(true)
-                .payload(categories)
+                .data(categories)
                 .build());
     }
 
@@ -78,7 +78,7 @@ public class CategoryController extends TranslateMessages {
         Category category = categoryService.updateCategory(id, categoryDTO);
         return ResponseEntity.ok(ApiResponse.builder().success(true)
                 .message(translate(MessageKeys.UPDATE_CATEGORIES_SUCCESS))
-                .payload(category)
+                .data(category)
                 .build());
     }
 

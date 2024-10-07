@@ -1,8 +1,9 @@
-package vn.com.openlab.model;
+package vn.com.openlab.api.order.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import vn.com.openlab.api.user.model.User;
 
 import java.time.LocalDate;
 import java.util.Date;

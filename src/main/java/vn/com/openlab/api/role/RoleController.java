@@ -1,12 +1,12 @@
-package vn.com.openlab.controller;
+package vn.com.openlab.api.role;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vn.com.openlab.model.Role;
-import vn.com.openlab.service.RoleService;
+import vn.com.openlab.api.role.model.Role;
+import vn.com.openlab.api.role.service.RoleService;
 
 import java.util.List;
 

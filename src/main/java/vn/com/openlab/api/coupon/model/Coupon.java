@@ -1,4 +1,4 @@
-package vn.com.openlab.model;
+package vn.com.openlab.api.coupon.model;
 
 import jakarta.persistence.*;
 import lombok.*;

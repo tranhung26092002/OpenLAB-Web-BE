@@ -18,7 +18,7 @@ public class UserActivityLogger {
     public void controllerMethods() {
     }
 
-    @Around("controllerMethods() && execution(* vn.com.openlab.controller.UserController.*(..))")
+    @Around("controllerMethods() && execution(* vn.com.openlab.api.user.UserController.*(..))")
     public Object logUserActivity(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodName = joinPoint.getSignature().getName();
         String remoteAddress = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())

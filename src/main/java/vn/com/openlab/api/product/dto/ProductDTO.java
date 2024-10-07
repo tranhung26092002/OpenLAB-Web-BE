@@ -1,4 +1,4 @@
-package vn.com.openlab.dto;
+package vn.com.openlab.api.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;

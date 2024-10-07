@@ -1,8 +1,8 @@
-package vn.com.openlab.model;
+package vn.com.openlab.api.token.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import vn.com.openlab.model.User;
+import vn.com.openlab.api.user.model.User;
 
 import java.time.Instant;
 

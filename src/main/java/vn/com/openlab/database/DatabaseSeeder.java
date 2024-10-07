@@ -4,12 +4,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import vn.com.openlab.model.Category;
-import vn.com.openlab.model.Role;
-import vn.com.openlab.model.User;
-import vn.com.openlab.repository.CategoryRepository;
-import vn.com.openlab.repository.RoleRepository;
-import vn.com.openlab.repository.UserRepository;
+import vn.com.openlab.api.category.model.Category;
+import vn.com.openlab.api.role.model.Role;
+import vn.com.openlab.api.user.model.User;
+import vn.com.openlab.api.category.repository.CategoryRepository;
+import vn.com.openlab.api.role.repository.RoleRepository;
+import vn.com.openlab.api.user.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -42,7 +42,7 @@ public class DatabaseSeeder {
                     User adminUser = User.builder()
                             .fullName("Admin User")
                             .phoneNumber("123456789")
-                            .password(passwordEncoder.encode("1234"))
+                            .password(passwordEncoder.encode("123456"))
                             .active(true)
                             .role(adminRole) // Gán vai trò ADMIN cho người dùng
                             .address("Van Quan, Ha Dong, Ha Noi")
@@ -54,7 +54,7 @@ public class DatabaseSeeder {
                     User normalUser = User.builder()
                             .fullName("Normal User")
                             .phoneNumber("987654321")
-                            .password(passwordEncoder.encode("1234"))
+                            .password(passwordEncoder.encode("123456"))
                             .active(true)
                             .role(userRole) // Gán vai trò USER cho người dùng
                             .address("My Dinh, Ha Noi")

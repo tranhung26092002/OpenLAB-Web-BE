@@ -1,8 +1,8 @@
-package vn.com.openlab.service;
+package vn.com.openlab.api.order.service;
 
 
 import vn.com.openlab.api.order.dto.OrderDetailDTO;
-import vn.com.openlab.model.OrderDetail;
+import vn.com.openlab.api.order.model.OrderDetail;
 
 import java.util.List;
 

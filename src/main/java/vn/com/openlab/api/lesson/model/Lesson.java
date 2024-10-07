@@ -1,8 +1,9 @@
-package vn.com.openlab.model;
+package vn.com.openlab.api.lesson.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 import vn.com.openlab.helper.base.model.BaseEntity;
+import vn.com.openlab.api.product.model.Product;
 
 @AllArgsConstructor
 @NoArgsConstructor

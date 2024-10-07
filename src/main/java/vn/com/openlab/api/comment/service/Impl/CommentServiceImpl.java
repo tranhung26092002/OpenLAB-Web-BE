@@ -1,4 +1,4 @@
-package vn.com.openlab.service.Impl;
+package vn.com.openlab.api.comment.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,14 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import vn.com.openlab.component.TranslateMessages;
 import vn.com.openlab.api.comment.dto.CommentDTO;
 import vn.com.openlab.helper.exception.payload.DataNotFoundException;
-import vn.com.openlab.model.Comment;
-import vn.com.openlab.model.Product;
-import vn.com.openlab.model.User;
-import vn.com.openlab.repository.CommentRepository;
-import vn.com.openlab.repository.ProductRepository;
-import vn.com.openlab.repository.UserRepository;
-import vn.com.openlab.response.comment.CommentResponse;
-import vn.com.openlab.service.CommentService;
+import vn.com.openlab.api.comment.model.Comment;
+import vn.com.openlab.api.product.model.Product;
+import vn.com.openlab.api.user.model.User;
+import vn.com.openlab.api.comment.repository.CommentRepository;
+import vn.com.openlab.api.product.repository.ProductRepository;
+import vn.com.openlab.api.user.repository.UserRepository;
+import vn.com.openlab.api.comment.response.CommentResponse;
+import vn.com.openlab.api.comment.service.CommentService;
 import vn.com.openlab.utils.object.MessageKeys;
 
 import java.util.List;

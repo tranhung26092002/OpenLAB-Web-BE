@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import vn.com.openlab.model.Token;
-import vn.com.openlab.repository.TokenRepository;
+import vn.com.openlab.api.token.model.Token;
+import vn.com.openlab.api.token.repository.TokenRepository;
 
 import java.security.Key;
 import java.util.Date;

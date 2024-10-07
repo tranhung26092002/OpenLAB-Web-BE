@@ -1,13 +1,13 @@
-package vn.com.openlab.service;
+package vn.com.openlab.api.product.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import vn.com.openlab.api.product.dto.ProductDTO;
 import vn.com.openlab.api.product.dto.ProductImageDTO;
-import vn.com.openlab.model.Product;
-import vn.com.openlab.model.ProductImage;
-import vn.com.openlab.response.product.ProductResponse;
+import vn.com.openlab.api.product.model.Product;
+import vn.com.openlab.api.product.model.ProductImage;
+import vn.com.openlab.api.product.response.ProductResponse;
 
 import java.util.List;
 

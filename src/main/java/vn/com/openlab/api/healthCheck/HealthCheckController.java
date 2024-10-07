@@ -1,12 +1,12 @@
-package vn.com.openlab.controller;
+package vn.com.openlab.api.healthCheck;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vn.com.openlab.model.Category;
-import vn.com.openlab.service.CategoryService;
+import vn.com.openlab.api.category.model.Category;
+import vn.com.openlab.api.category.service.CategoryService;
 
 import java.net.InetAddress;
 import java.util.List;

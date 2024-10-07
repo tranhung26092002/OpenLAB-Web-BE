@@ -1,4 +1,4 @@
-package vn.com.openlab.response.order;
+package vn.com.openlab.api.order.response.order;
 
 import lombok.*;
 

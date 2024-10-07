@@ -74,7 +74,7 @@ public class UserController extends TranslateMessages {
             return ResponseEntity.ok().body(
                     ApiResponse.builder().success(true)
                             .message(translate(MessageKeys.REGISTER_SUCCESS))
-                            .payload(UserRegisterResponse.fromUser(newUser)).build()
+                            .data(UserRegisterResponse.fromUser(newUser)).build()
             );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder()
@@ -92,6 +92,9 @@ public class UserController extends TranslateMessages {
             BindingResult bindingResult
     ) {
         try {
+
+            System.out.println(userLoginDTO);
+
             if (bindingResult.hasErrors()) {
                 List<String> errorMessages = bindingResult.getFieldErrors().stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
@@ -115,17 +118,26 @@ public class UserController extends TranslateMessages {
 
             // Thêm refresh token vào cookie
             Cookie refreshTokenCookie = new Cookie("refreshToken", token.getRefreshToken());
+
             refreshTokenCookie.setHttpOnly(true);  // Chỉ có thể truy cập thông qua HTTP, giúp tăng tính bảo mật
-            refreshTokenCookie.setSecure(true);    // Chỉ gửi cookie qua HTTPS (đảm bảo trang web sử dụng HTTPS)
+            refreshTokenCookie.setSecure(false);    // Chỉ gửi cookie qua HTTPS (đảm bảo trang web sử dụng HTTPS)
             refreshTokenCookie.setPath("/");       // Đặt phạm vi đường dẫn cho cookie
             refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // Thời hạn 7 ngày
             response.addCookie(refreshTokenCookie);  // Thêm cookie vào phản hồi HTTP
 
+            refreshTokenCookie.setAttribute("SameSite", "Lax"); // Hoặc "Strict" nếu bạn muốn chặt chẽ hơn
+            refreshTokenCookie.setAttribute("Partition", "partition-value"); // Thêm tùy chọn nếu cần
+
             ApiResponse<LoginResponse> apiResponse = ApiResponse.<LoginResponse>builder()
                     .success(true)
                     .message(translate(MessageKeys.LOGIN_SUCCESS))
-                    .payload(LoginResponse.builder()
+                    .data(LoginResponse.builder()
                             .token(token.getToken())
+                            .fullName(user.getFullName())
+                            .address(user.getAddress())
+                            .role(user.getRole())
+                            .dateOfBirth(user.getDateOfBirth())
+                            .id(user.getId())
                             .build())
                     .build();
             return ResponseEntity.ok().body(apiResponse);
@@ -145,7 +157,7 @@ public class UserController extends TranslateMessages {
             ApiResponse<LoginResponse> apiResponse = ApiResponse.<LoginResponse>builder()
                     .success(true)
                     .message(translate(MessageKeys.REFRESH_TOKEN_SUCCESS))
-                    .payload(userService.refreshToken(refreshTokenDTO))
+                    .data(userService.refreshToken(refreshTokenDTO))
                     .build();
             return ResponseEntity.ok().body(apiResponse);
         } catch (Exception e) {
@@ -165,7 +177,7 @@ public class UserController extends TranslateMessages {
             String extractedToken = token.substring(7);
             User user = userService.getUserDetailsFromToken(extractedToken);
             return ResponseEntity.ok(ApiResponse.<UserResponse>builder().success(true)
-                    .payload(UserResponse.fromUser(user)).build()
+                    .data(UserResponse.fromUser(user)).build()
             );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -193,7 +205,7 @@ public class UserController extends TranslateMessages {
             return ResponseEntity.ok(ApiResponse.<UserResponse>builder()
                     .success(true)
                     .message(translate(MessageKeys.MESSAGE_UPDATE_GET))
-                    .payload(UserResponse.fromUser(updateUser)).build());
+                    .data(UserResponse.fromUser(updateUser)).build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     ApiResponse.<UserResponse>builder()
@@ -240,7 +252,7 @@ public class UserController extends TranslateMessages {
             return ResponseEntity.ok(ApiResponse.builder()
                     .success(true)
                     .message(translate(MessageKeys.RESET_PASSWORD_SUCCESS))
-                    .payload("New Password: " + newPasword)
+                    .data("New Password: " + newPasword)
                     .build());
         } catch (Exception e) {
             return ResponseEntity.ok(ApiResponse.builder()

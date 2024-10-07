@@ -1,8 +1,8 @@
-package vn.com.openlab.response.order_detail;
+package vn.com.openlab.api.order.response.order_detail;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import vn.com.openlab.model.OrderDetail;
+import vn.com.openlab.api.order.model.OrderDetail;
 
 import java.util.List;
 

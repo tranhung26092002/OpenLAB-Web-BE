@@ -1,4 +1,4 @@
-package vn.com.openlab.controller;
+package vn.com.openlab.api.order;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import vn.com.openlab.component.TranslateMessages;
 import vn.com.openlab.api.order.dto.OrderDTO;
 import vn.com.openlab.helper.base.response.ApiResponse;
-import vn.com.openlab.model.Order;
-import vn.com.openlab.response.order.OrderPageResponse;
-import vn.com.openlab.response.order.OrderResponse;
-import vn.com.openlab.service.OrderService;
+import vn.com.openlab.api.order.model.Order;
+import vn.com.openlab.api.order.response.order.OrderPageResponse;
+import vn.com.openlab.api.order.response.order.OrderResponse;
+import vn.com.openlab.api.order.service.OrderService;
 import vn.com.openlab.utils.object.MessageKeys;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class OrderController extends TranslateMessages {
                     ApiResponse.<Order>builder()
                             .success(true)
                             .message(translate(MessageKeys.CREATE_ORDER_SUCCESS, order.getId()))
-                            .payload(order)
+                            .data(order)
                             .build()
             );
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class OrderController extends TranslateMessages {
             List<OrderResponse> orderResponses = OrderResponse.fromOrdersList(orders);
             return ResponseEntity.ok(ApiResponse.builder()
                     .success(true)
-                    .payload(orderResponses)
+                    .data(orderResponses)
                     .build()
             );
         } catch (Exception e) {
@@ -96,7 +96,7 @@ public class OrderController extends TranslateMessages {
             OrderResponse orderResponse = OrderResponse.fromOrder(existsOrder);
             return ResponseEntity.ok(ApiResponse.builder()
                     .success(true)
-                    .payload(orderResponse).build());
+                    .data(orderResponse).build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder()
                     .error(e.getMessage())
@@ -144,7 +144,7 @@ public class OrderController extends TranslateMessages {
             return ResponseEntity.ok().body(ApiResponse.builder()
                     .success(true)
                     .message(translate(MessageKeys.MESSAGE_UPDATE_GET, order.getId()))
-                    .payload(order).build()
+                    .data(order).build()
             );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder()

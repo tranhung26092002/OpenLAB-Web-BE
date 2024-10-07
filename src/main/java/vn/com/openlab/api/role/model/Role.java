@@ -1,4 +1,4 @@
-package vn.com.openlab.model;
+package vn.com.openlab.api.role.model;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,12 +1,12 @@
-package vn.com.openlab.response.product;
+package vn.com.openlab.api.product.response;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import vn.com.openlab.helper.base.response.BaseResponse;
-import vn.com.openlab.model.Product;
-import vn.com.openlab.model.ProductImage;
-import vn.com.openlab.response.comment.CommentResponse;
+import vn.com.openlab.api.product.model.Product;
+import vn.com.openlab.api.product.model.ProductImage;
+import vn.com.openlab.api.comment.response.CommentResponse;
 
 import java.util.ArrayList;
 import java.util.List;

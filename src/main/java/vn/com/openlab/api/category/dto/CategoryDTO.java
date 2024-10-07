@@ -1,4 +1,4 @@
-package vn.com.openlab.dto;
+package vn.com.openlab.api.category.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;

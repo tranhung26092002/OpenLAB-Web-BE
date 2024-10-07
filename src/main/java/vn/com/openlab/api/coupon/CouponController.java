@@ -1,4 +1,4 @@
-package vn.com.openlab.controller;
+package vn.com.openlab.api.coupon;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vn.com.openlab.helper.base.response.ApiResponse;
-import vn.com.openlab.response.coupon.CouponCalculationResponse;
-import vn.com.openlab.service.CouponService;
+import vn.com.openlab.api.coupon.response.CouponCalculationResponse;
+import vn.com.openlab.api.coupon.service.CouponService;
 
 @RestController
 @RequestMapping("${api.prefix}/coupons")
@@ -33,7 +33,7 @@ public class CouponController {
             double finalAmount = couponService.calculateCouponValue(couponCode, totalAmount);
             return ResponseEntity.ok(ApiResponse.<CouponCalculationResponse>builder()
                     .success(true)
-                    .payload(CouponCalculationResponse.builder()
+                    .data(CouponCalculationResponse.builder()
                             .result(finalAmount)
                             .errorMessage(null)
                             .build())
@@ -42,7 +42,7 @@ public class CouponController {
             return ResponseEntity.badRequest().body(
                     ApiResponse.<CouponCalculationResponse>builder()
                             .error(e.getMessage())
-                            .payload(CouponCalculationResponse.builder()
+                            .data(CouponCalculationResponse.builder()
                                     .result(totalAmount)
                                     .errorMessage(e.getMessage())
                                     .build())

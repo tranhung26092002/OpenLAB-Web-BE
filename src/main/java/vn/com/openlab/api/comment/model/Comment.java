@@ -1,9 +1,9 @@
-package vn.com.openlab.model;
+package vn.com.openlab.api.comment.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import vn.com.openlab.model.Product;
-import vn.com.openlab.model.User;
+import vn.com.openlab.api.product.model.Product;
+import vn.com.openlab.api.user.model.User;
 import vn.com.openlab.helper.base.model.BaseEntity;
 
 @Data

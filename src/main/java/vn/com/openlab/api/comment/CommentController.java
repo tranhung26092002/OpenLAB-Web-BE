@@ -1,4 +1,4 @@
-package vn.com.openlab.controller;
+package vn.com.openlab.api.comment;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import vn.com.openlab.component.TranslateMessages;
 import vn.com.openlab.api.comment.dto.CommentDTO;
 import vn.com.openlab.helper.base.response.ApiResponse;
-import vn.com.openlab.model.Comment;
-import vn.com.openlab.response.comment.CommentResponse;
-import vn.com.openlab.service.CommentService;
+import vn.com.openlab.api.comment.model.Comment;
+import vn.com.openlab.api.comment.response.CommentResponse;
+import vn.com.openlab.api.comment.service.CommentService;
 import vn.com.openlab.utils.object.MessageKeys;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class CommentController extends TranslateMessages {
         }
 
         return ResponseEntity.ok(ApiResponse.builder()
-                .payload(commentResponses)
+                .data(commentResponses)
                 .build());
     }
 
@@ -69,7 +69,7 @@ public class CommentController extends TranslateMessages {
             Comment newComment = commentService.insertComment(commentDTO);
             return ResponseEntity.ok(ApiResponse.builder().success(true)
                     .message(translate(MessageKeys.COMMENT_INSERT_SUCCESS))
-                    .payload(newComment)
+                    .data(newComment)
                     .build());
         } catch (Exception e) {
             // handle and log exception

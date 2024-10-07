@@ -1,4 +1,4 @@
-package vn.com.openlab.response.coupon;
+package vn.com.openlab.api.coupon.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

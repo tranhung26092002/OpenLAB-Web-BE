@@ -1,12 +1,12 @@
-package vn.com.openlab.service.Impl;
+package vn.com.openlab.api.category.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.com.openlab.api.category.dto.CategoryDTO;
-import vn.com.openlab.model.Category;
-import vn.com.openlab.repository.CategoryRepository;
-import vn.com.openlab.service.CategoryService;
+import vn.com.openlab.api.category.model.Category;
+import vn.com.openlab.api.category.repository.CategoryRepository;
+import vn.com.openlab.api.category.service.CategoryService;
 import vn.com.openlab.utils.object.LocalizationUtils;
 import vn.com.openlab.utils.object.MessageKeys;
 

@@ -1,4 +1,4 @@
-package vn.com.openlab.model;
+package vn.com.openlab.api.order.model;
 
 public class OrderStatus {
     public static final String PENDING = "pending";

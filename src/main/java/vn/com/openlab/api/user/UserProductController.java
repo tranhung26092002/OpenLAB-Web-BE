@@ -109,7 +109,7 @@ public class UserProductController extends TranslateMessages {
             return ResponseEntity.ok(ApiResponse.builder()
                     .success(true)
                     .message(translate(MessageKeys.MESSAGE_SUCCESS_PRODUCT_ADDED))
-                    .payload(productResponse)
+                    .data(productResponse)
                     .build());
 
         } catch (Exception e) {
@@ -148,7 +148,7 @@ public class UserProductController extends TranslateMessages {
             return ResponseEntity.ok(ApiResponse.builder()
                     .success(true)
                     .message(translate(MessageKeys.MESSAGE_SUCCESS_PRODUCT_ADDED))
-                    .payload(productResponse)
+                    .data(productResponse)
                     .build());
 
         } catch (Exception e) {

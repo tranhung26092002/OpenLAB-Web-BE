@@ -1,7 +1,7 @@
-package vn.com.openlab.repository;
+package vn.com.openlab.api.order.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import vn.com.openlab.model.OrderDetail;
+import vn.com.openlab.api.order.model.OrderDetail;
 
 import java.util.List;
 

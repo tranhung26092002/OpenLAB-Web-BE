@@ -1,8 +1,8 @@
-package vn.com.openlab.repository;
+package vn.com.openlab.api.comment.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
-import vn.com.openlab.model.Comment;
+import vn.com.openlab.api.comment.model.Comment;
 
 import java.util.List;
 

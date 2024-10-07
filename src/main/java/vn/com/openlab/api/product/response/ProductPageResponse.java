@@ -1,4 +1,4 @@
-package vn.com.openlab.response.product;
+package vn.com.openlab.api.product.response;
 
 import lombok.*;
 

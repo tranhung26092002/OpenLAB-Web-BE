@@ -1,4 +1,4 @@
-package vn.com.openlab.dto;
+package vn.com.openlab.api.comment.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

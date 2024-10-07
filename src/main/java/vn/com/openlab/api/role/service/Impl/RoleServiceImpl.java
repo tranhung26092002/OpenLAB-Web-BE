@@ -1,10 +1,10 @@
-package vn.com.openlab.service.Impl;
+package vn.com.openlab.api.role.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import vn.com.openlab.model.Role;
-import vn.com.openlab.repository.RoleRepository;
-import vn.com.openlab.service.RoleService;
+import vn.com.openlab.api.role.model.Role;
+import vn.com.openlab.api.role.repository.RoleRepository;
+import vn.com.openlab.api.role.service.RoleService;
 
 import java.util.List;
 

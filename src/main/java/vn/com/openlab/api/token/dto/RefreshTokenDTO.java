@@ -1,4 +1,4 @@
-package vn.com.openlab.dto;
+package vn.com.openlab.api.token.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

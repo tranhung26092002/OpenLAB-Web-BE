@@ -1,10 +1,10 @@
-package vn.com.openlab.service;
+package vn.com.openlab.api.order.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import vn.com.openlab.api.order.dto.OrderDTO;
-import vn.com.openlab.model.Order;
-import vn.com.openlab.response.order.OrderResponse;
+import vn.com.openlab.api.order.model.Order;
+import vn.com.openlab.api.order.response.order.OrderResponse;
 
 import java.util.List;
 

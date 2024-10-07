@@ -20,11 +20,13 @@ public class CorsFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain
     ) throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "https://openlab.com.vn");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600"); // 1h
         response.setHeader("Access-Control-Allow-Headers", "authorization, content-type, accept, x-requested-with");
         response.setHeader("Access-Control-Expose-Headers", "xsrf-token");
+        response.setHeader("Access-Control-Allow-Credentials", "true"); // Cho phép credentials (cookie)
+
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {

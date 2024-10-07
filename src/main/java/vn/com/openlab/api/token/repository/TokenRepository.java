@@ -1,8 +1,8 @@
-package vn.com.openlab.repository;
+package vn.com.openlab.api.token.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import vn.com.openlab.model.Token;
-import vn.com.openlab.model.User;
+import vn.com.openlab.api.token.model.Token;
+import vn.com.openlab.api.user.model.User;
 
 import java.util.List;
 import java.util.Optional;

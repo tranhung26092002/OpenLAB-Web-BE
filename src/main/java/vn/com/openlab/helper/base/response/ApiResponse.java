@@ -13,7 +13,7 @@ import java.util.List;
 public class ApiResponse<T> {
     private boolean success = false;
     private String message;
-    private T payload;
+    private T data;
     private List<String> errors;
     private String error;
     private Long id;

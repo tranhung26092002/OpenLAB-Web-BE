@@ -1,9 +1,9 @@
-package vn.com.openlab.response.comment;
+package vn.com.openlab.api.comment.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import vn.com.openlab.model.Comment;
-import vn.com.openlab.response.user.UserResponse;
+import vn.com.openlab.api.comment.model.Comment;
+import vn.com.openlab.api.user.response.UserResponse;
 
 import java.time.LocalDateTime;
 

@@ -1,8 +1,9 @@
-package vn.com.openlab.model;
+package vn.com.openlab.api.order.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import vn.com.openlab.api.product.model.Product;
 
 @AllArgsConstructor
 @NoArgsConstructor

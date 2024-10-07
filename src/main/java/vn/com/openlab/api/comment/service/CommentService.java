@@ -1,10 +1,10 @@
-package vn.com.openlab.service;
+package vn.com.openlab.api.comment.service;
 
 
 import vn.com.openlab.api.comment.dto.CommentDTO;
 import vn.com.openlab.helper.exception.payload.DataNotFoundException;
-import vn.com.openlab.model.Comment;
-import vn.com.openlab.response.comment.CommentResponse;
+import vn.com.openlab.api.comment.model.Comment;
+import vn.com.openlab.api.comment.response.CommentResponse;
 
 import java.util.List;
 

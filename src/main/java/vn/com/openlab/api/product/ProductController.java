@@ -1,4 +1,4 @@
-package vn.com.openlab.controller;
+package vn.com.openlab.api.product;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.javafaker.Faker;
@@ -22,11 +22,11 @@ import vn.com.openlab.component.TranslateMessages;
 import vn.com.openlab.api.product.dto.ProductDTO;
 import vn.com.openlab.api.product.dto.ProductImageDTO;
 import vn.com.openlab.helper.base.response.ApiResponse;
-import vn.com.openlab.model.Product;
-import vn.com.openlab.model.ProductImage;
-import vn.com.openlab.response.product.ProductPageResponse;
-import vn.com.openlab.response.product.ProductResponse;
-import vn.com.openlab.service.ProductService;
+import vn.com.openlab.api.product.model.Product;
+import vn.com.openlab.api.product.model.ProductImage;
+import vn.com.openlab.api.product.response.ProductPageResponse;
+import vn.com.openlab.api.product.response.ProductResponse;
+import vn.com.openlab.api.product.service.ProductService;
 import vn.com.openlab.utils.object.MessageKeys;
 
 import java.io.IOException;
@@ -65,7 +65,7 @@ public class ProductController extends TranslateMessages {
             return ResponseEntity.ok(
                     ApiResponse.builder().success(true)
                             .message(translate(MessageKeys.CREATE_PRODUCT_SUCCESS))
-                            .payload(newProduct)
+                            .data(newProduct)
                             .build()
             );
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class ProductController extends TranslateMessages {
 
             return ResponseEntity.ok(ApiResponse.builder().success(true)
                     .message(translate(MessageKeys.FILES_IMAGES_SUCCESS))
-                    .payload(productImages));
+                    .data(productImages));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder()
                     .message(translate(MessageKeys.FILES_IMAGES_FAILED))
@@ -211,7 +211,7 @@ public class ProductController extends TranslateMessages {
         try {
             Product existsProducts = productService.getProductById(id);
             return ResponseEntity.ok(ApiResponse.builder().success(true)
-                    .payload(ProductResponse.fromProduct(existsProducts)).build());
+                    .data(ProductResponse.fromProduct(existsProducts)).build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder()
                     .message(translate(MessageKeys.GET_INFORMATION_FAILED))
@@ -225,7 +225,7 @@ public class ProductController extends TranslateMessages {
     public ResponseEntity<?> getProductDetailsById(@RequestParam("id") Long id) {
         try {
             Product existsProducts = productService.getDetailProducts(id);
-            return ResponseEntity.ok(ApiResponse.builder().success(true).payload(existsProducts).build());
+            return ResponseEntity.ok(ApiResponse.builder().success(true).data(existsProducts).build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder()
                     .message(translate(MessageKeys.GET_INFORMATION_FAILED))
@@ -242,7 +242,7 @@ public class ProductController extends TranslateMessages {
                     .map(Long::parseLong)
                     .collect(Collectors.toList());
             List<Product> products = productService.findProductsByIds(productIds);
-            return ResponseEntity.ok(ApiResponse.builder().success(true).payload(products).build());
+            return ResponseEntity.ok(ApiResponse.builder().success(true).data(products).build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder()
                     .message(translate(MessageKeys.GET_INFORMATION_FAILED))
@@ -257,7 +257,7 @@ public class ProductController extends TranslateMessages {
     ) {
         try {
             Product updateProduct = productService.updateProduct(id, productDTO);
-            return ResponseEntity.ok(ApiResponse.builder().success(true).payload(updateProduct).build());
+            return ResponseEntity.ok(ApiResponse.builder().success(true).data(updateProduct).build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder()
                     .message(translate(MessageKeys.MESSAGE_UPDATE_GET))
