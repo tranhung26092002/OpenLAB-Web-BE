@@ -103,7 +103,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(domainProtocol, "http://14.225.255.177:8081")); // Define allowed origins
+        configuration.setAllowedOrigins(List.of(domainProtocol, "http://14.225.255.177:8081", "http://localhost:3000", "http://localhost:8081")); // Define allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true); // Nếu có cần truyền Cookie
