@@ -68,7 +68,7 @@ domain:
 jwt:
   expiration: 2592000
   expiration-refresh-token: 5184000
-  secretKey: ${e85609a1eb74f81e01545c219056b353784ade69f73fd98e8cde1cc969553cb2}
+  secretKey: ${JWT_SECRET_KEY}
 
 management:
   endpoint:
