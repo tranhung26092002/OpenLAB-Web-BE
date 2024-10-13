@@ -1,9 +1,7 @@
 package edu.ptit.openlab.service;
 
-import edu.ptit.openlab.entity.Course;
 import edu.ptit.openlab.entity.Product;
 import edu.ptit.openlab.payload.response.BaseResponse;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 @Service

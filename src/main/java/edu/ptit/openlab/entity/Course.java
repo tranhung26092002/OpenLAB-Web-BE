@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor

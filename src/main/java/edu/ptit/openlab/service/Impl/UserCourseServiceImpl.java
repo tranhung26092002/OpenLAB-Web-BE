@@ -9,7 +9,6 @@ import edu.ptit.openlab.repository.CourseRepository;
 import edu.ptit.openlab.repository.UserRepository;
 import edu.ptit.openlab.service.UserCourseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

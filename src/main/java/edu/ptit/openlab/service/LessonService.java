@@ -2,7 +2,6 @@ package edu.ptit.openlab.service;
 
 import edu.ptit.openlab.payload.response.BaseResponse;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service

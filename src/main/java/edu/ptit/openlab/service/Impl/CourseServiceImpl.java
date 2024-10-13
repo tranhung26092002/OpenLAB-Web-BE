@@ -7,7 +7,6 @@ import edu.ptit.openlab.payload.response.BaseResponse;
 import edu.ptit.openlab.repository.CourseRepository;
 import edu.ptit.openlab.service.CourseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

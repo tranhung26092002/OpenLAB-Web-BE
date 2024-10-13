@@ -1,6 +1,5 @@
 package edu.ptit.openlab.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -19,7 +18,7 @@ import java.util.List;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket api(){
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("edu.ptit.openlab.controller"))
@@ -34,7 +33,6 @@ public class SwaggerConfig {
         return new ApiKey("Bearer", "Authorization", "header");
     }
 
-
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("My REST API")
@@ -43,7 +41,7 @@ public class SwaggerConfig {
                 .license("License of API")
                 .licenseUrl("API license URL")
                 .version("1.0.0")
-                .contact(new Contact("Your Name", "yourwebsite.com", "myeaddress@company.com"))
+                .contact(new Contact("OpenLab", "openlab.com.vn", "openlab.user@gmail.com"))
                 .build();
     }
 

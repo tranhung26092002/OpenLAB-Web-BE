@@ -2,10 +2,9 @@ package edu.ptit.openlab.filter;
 
 import edu.ptit.openlab.DTO.AuthenticationResponse;
 import edu.ptit.openlab.entity.User;
-import edu.ptit.openlab.repository.UserRepository;
 import edu.ptit.openlab.service.AuthenticationService;
+import lombok.RequiredArgsConstructor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,10 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    @Autowired
-    private UserRepository userRepository;
+@RequiredArgsConstructor
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationService authenticationService;
     private final AuthenticationManager authenticationManager;
