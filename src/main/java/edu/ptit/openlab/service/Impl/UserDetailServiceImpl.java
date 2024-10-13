@@ -27,13 +27,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
         UserDTO userDTO = new UserDTO();
 
         userDTO.setId(userEntity.getId());
-        userDTO.setName(userEntity.getName());
+        userDTO.setUsername(userEntity.getUsername());
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setPassword(userEntity.getPassword());
-        userDTO.setPhone(userEntity.getPhone());
-        userDTO.setRoles(userEntity.getRoles());
+        userDTO.setPhoneNumber(userEntity.getPhoneNumber());
+        userDTO.setVaiTro(userEntity.getVaiTro());
         userDTO.setCourses(userEntity.getCourses());
-
+        userDTO.setProducts(userEntity.getProducts());
+        userDTO.setAddress(userEntity.getAddress());
+        
         return userDTO;
     }
 }

@@ -6,6 +6,7 @@ import edu.ptit.openlab.mapper.CourseMapper;
 import edu.ptit.openlab.payload.response.BaseResponse;
 import edu.ptit.openlab.repository.CourseRepository;
 import edu.ptit.openlab.service.CourseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,12 +18,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
-    @Autowired
-    private CourseRepository courseRepository;
-    @Autowired
-    private CourseMapper courseMapper;
+    private final CourseRepository courseRepository;
+    private final CourseMapper courseMapper;
 
     @Override
     @Transactional
@@ -96,11 +96,10 @@ public class CourseServiceImpl implements CourseService {
             if (optionalCourse.isPresent()) {
                 Course course = optionalCourse.get();
 
-                course.setTitle(updateCourse.getTitle());
+                course.setNameCourse(updateCourse.getNameCourse());
                 course.setThumbnail(updateCourse.getThumbnail());
                 course.setCreatedBy(updateCourse.getCreatedBy());
-                course.setTypeProduct(updateCourse.getTypeProduct());
-                course.setIsPublish(updateCourse.getIsPublish());
+                course.setTypeCourse(updateCourse.getTypeCourse());
                 course.setDescription(updateCourse.getDescription());
                 course.setOriginalPrice(updateCourse.getOriginalPrice());
 

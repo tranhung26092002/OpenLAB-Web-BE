@@ -7,7 +7,8 @@ import edu.ptit.openlab.mapper.CourseMapper;
 import edu.ptit.openlab.payload.response.BaseResponse;
 import edu.ptit.openlab.repository.CourseRepository;
 import edu.ptit.openlab.repository.UserRepository;
-import edu.ptit.openlab.service.UserService;
+import edu.ptit.openlab.service.UserCourseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private CourseRepository courseRepository;
+@RequiredArgsConstructor
+public class UserCourseServiceImpl implements UserCourseService {
+    private final UserRepository userRepository;
+    private final CourseRepository courseRepository;
 
-    @Autowired
-    private CourseMapper courseMapper;
+    private final CourseMapper courseMapper;
 
     @Override
     public BaseResponse getAllCourse(Long userId) {
@@ -105,33 +104,31 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public BaseResponse updateCourse(Long userId, Long courseId) {
-        try {
-            User user = userRepository.findById(userId).orElse(null);
-
-            if (user == null) {
-                return new BaseResponse(404, "User not found", null);
-            }
-
-            Course course = user.getCourses().stream()
-                    .filter(c -> c.getId().equals(courseId))
-                    .findFirst()
-                    .orElse(null);
-
-            if (course == null) {
-                return new BaseResponse(404, "Course not found in user's courses", null);
-            }
-
-            course.setIsCompleted(true);
-
-            courseRepository.save(course);
-
-            return new BaseResponse(200, "Course updated successfully", course);
-        } catch (Exception e) {
-            return new BaseResponse(500, "Error updating course", null);
-        }
-    }
+//    @Override
+//    public BaseResponse updateCourse(Long userId, Long courseId) {
+//        try {
+//            User user = userRepository.findById(userId).orElse(null);
+//
+//            if (user == null) {
+//                return new BaseResponse(404, "User not found", null);
+//            }
+//
+//            Course course = user.getCourses().stream()
+//                    .filter(c -> c.getId().equals(courseId))
+//                    .findFirst()
+//                    .orElse(null);
+//
+//            if (course == null) {
+//                return new BaseResponse(404, "Course not found in user's courses", null);
+//            }
+//
+//            courseRepository.save(course);
+//
+//            return new BaseResponse(200, "Course updated successfully", course);
+//        } catch (Exception e) {
+//            return new BaseResponse(500, "Error updating course", null);
+//        }
+//    }
 
     @Override
     public BaseResponse deleteCourse(Long userId, Long courseId) {

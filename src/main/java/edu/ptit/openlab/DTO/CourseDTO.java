@@ -9,12 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseDTO {
-    private String subId;
-    private String title;
+    private String nameCourse;
     private MultipartFile thumbnail;
-    private String createdBy;
-    private String typeProduct;
-    private Boolean isPublish;
+    private String typeCourse;
     private String description;
     private Double originalPrice;
 }

@@ -1,6 +1,7 @@
 package edu.ptit.openlab.controller.admin;
 
 import edu.ptit.openlab.service.StorageService;
+import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 //@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 @RestController
-@RequestMapping("/api/images")
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/images")
 public class ImgController {
-    @Autowired
-    private StorageService storageService;
+    private final StorageService storageService;
     private final Tika tika = new Tika();
 
     @PostMapping("/upload")

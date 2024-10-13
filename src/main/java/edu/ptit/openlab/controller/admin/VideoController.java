@@ -1,6 +1,7 @@
 package edu.ptit.openlab.controller.admin;
 
 import edu.ptit.openlab.service.StorageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -12,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/upload")
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/upload")
 public class VideoController {
-    @Autowired
-    private StorageService storageService;
+    private final StorageService storageService;
 
     @GetMapping("/video/{fileName}")
     public ResponseEntity<Resource> getVideo(@PathVariable String fileName){

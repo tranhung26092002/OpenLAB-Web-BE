@@ -2,6 +2,7 @@ package edu.ptit.openlab.service;
 
 import edu.ptit.openlab.payload.response.BaseResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -11,10 +12,9 @@ public interface LessonService {
 
     BaseResponse getAllLessonOfCourse(Long courseId);
 
-    BaseResponse createLesson(MultipartFile file, String title, String document, String description, Long courseId);
+    BaseResponse createLesson(MultipartFile thumbnail, MultipartFile videoUrl, String nameLesson, String document, String description, Long courseId);
 
-    BaseResponse updateLesson(MultipartFile file, String title, String document, String description, Long lessonId,
-            Long courseId);
+    BaseResponse updateLesson(MultipartFile thumbnail, MultipartFile videoUrl, String nameLesson, String document, String description, Long lessonId);
 
     BaseResponse deleteLesson(Long lessonId);
 }

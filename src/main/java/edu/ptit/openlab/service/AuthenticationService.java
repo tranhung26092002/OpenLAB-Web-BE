@@ -6,6 +6,7 @@ import edu.ptit.openlab.payload.response.BaseResponse;
 import edu.ptit.openlab.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,17 +15,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Key;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    private final StorageService storageService;
 
     // Đoạn JWT_SECRET là bí mật, chỉ có phía server biết
     @Value("${jwt.secret-key}")
@@ -44,15 +47,16 @@ public class AuthenticationService {
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             // Thong tin dang nhap dung tao ra jwt token
             String token = createToken(user);
+            String role = mapRoles(user.getVaiTro()).get(0);
 
             // trả về email
-            AuthenticationResponse response = new AuthenticationResponse(token, user.getId(), user.getName(), user.getEmail(), user.getRoles());
+            AuthenticationResponse response = new AuthenticationResponse(token, user.getId(), role, email);
             return response;
         }
         throw new BadCredentialsException("Invalid email or password");
     }
 
-    public User register(String name, String email, String password, String role) throws IllegalAccessException {
+    public User register(String email, String password, int vaiTro) throws IllegalAccessException {
         //Kiểm tra xem email tồn tại không
         Optional<User> existingUser = Optional.ofNullable(userRepository.findByEmail(email));
         if(existingUser.isPresent()){
@@ -64,69 +68,99 @@ public class AuthenticationService {
 
         // Tao nguoi dung moi va luu vao co so du lieu
         User newUser = new User();
-
-        newUser.setName(name);
         newUser.setEmail(email);
         newUser.setPassword(encryptedPassword);
-
-        Set<String> roles = new HashSet<>();
-        roles.add(role);
-        newUser.setRoles(roles);
+        newUser.setVaiTro(vaiTro);
 
         return userRepository.save(newUser);
     }
 
-    public User updateUser(Long userId, String newName, String newEmail, String newPassword, String newRole){
+    public User updateUser(Long userId, String newEmail, String newPassword, String newAddress, String newPhoneNumber, String newUserName, MultipartFile newThumbnail, Date newDob, Integer newVaiTro){
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new NoSuchElementException("User not found with id: " + userId));
 
-        if (newName != null && !newName.isEmpty()) {
-            user.setName(newName);
-        }
         if (newEmail != null && !newEmail.isEmpty()) {
             user.setEmail(newEmail);
         }
         if (newPassword != null && !newPassword.isEmpty()) {
             user.setPassword(passwordEncoder.encode(newPassword));
         }
-        if (newRole != null) {
-            Set<String> roles = user.getRoles();
-            if (!roles.contains(newRole)) {
-                roles.add(newRole);
-                user.setRoles(roles);
-            }
+        if (newAddress != null && !newAddress.isEmpty()) {
+            user.setAddress(newAddress);
+        }
+        if (newPhoneNumber != null && !newPhoneNumber.isEmpty()) {
+            user.setPhoneNumber(newPhoneNumber);
+        }
+        if (newUserName != null && !newUserName.isEmpty()) {
+            user.setUsername(newUserName);
+        }
+        String fileName = storageService.uploadImageToFileSystem(newThumbnail);
+
+        if (newThumbnail != null && !newThumbnail.isEmpty()) {
+            user.setThumbnail(fileName);
+        }
+        if (newDob != null) {
+            user.setDob(newDob);
+        }
+        if (newVaiTro != null) {
+            user.setVaiTro(newVaiTro);
         }
         return userRepository.save(user);
     }
 
     public BaseResponse deleteUser(Long userId) {
+        BaseResponse response = new BaseResponse();
+
         try {
-            userRepository.deleteById(userId);
-            return new BaseResponse(200,"User deleted successfully", null);
+            // Kiểm tra xem user có tồn tại không
+            if (userRepository.existsById(userId)) {
+                userRepository.deleteById(userId);
+                response.setStatus(200);
+                response.setMessage("User deleted successfully.");
+            } else {
+                response.setStatus(404);
+                response.setMessage("User not found.");
+            }
         } catch (Exception e) {
-            // Xử lý ngoại lệ khi không thể xóa người dùng
-            e.printStackTrace();
-            return new BaseResponse(500,"Failed to delete user", null);
+            response.setStatus(500);
+            response.setMessage("Error occurred while deleting the user: " + e.getMessage());
         }
+
+        return response;
     }
 
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
+
     public Optional getUser(Long userId) {
         return userRepository.findById(userId);
     }
+
     private String createToken(User user) {
         // Thời gian hết hạn của Token
         Date expiryDate = new Date(System.currentTimeMillis() + JWT_EXPIRATION);
         //Tạo chuỗi json web token từ id của user
         return Jwts.builder()
                 .setSubject(user.getEmail())
-                .claim("roles", user.getRoles())
+                .claim("roles",mapRoles(user.getVaiTro()))
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(getSecretKey())
                 .compact();
+    }
+
+    public List<String> mapRoles(int vaiTro) {
+        List<String> roles = new ArrayList<>();
+        switch (vaiTro){
+            case 1:
+                roles.add("ROLE_USER");
+                break;
+            case 2:
+                roles.add("ROLE_ADMIN");
+                break;
+        }
+        return roles;
     }
 
     public UserDetails verifyToken(String token){
@@ -137,19 +171,13 @@ public class AuthenticationService {
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
-            // trả về email từ token
             User user = userRepository.findByEmail(email);
             // Trả về một đối tượng UserDetails
-            if (user != null) {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                for (String role : user.getRoles()) {
-                    authorities.add(new SimpleGrantedAuthority(role));
-                }
-
-                return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
-            } else {
-                return null; // User not found
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            for (String role : mapRoles(user.getVaiTro())) {
+                authorities.add(new SimpleGrantedAuthority(role));
             }
+            return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
         } catch (Exception e){
             // Nếu token không hợp lệ, hoặc hết hạn trả về null
             return null;

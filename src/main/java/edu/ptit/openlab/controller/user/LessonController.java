@@ -2,16 +2,16 @@ package edu.ptit.openlab.controller.user;
 
 import edu.ptit.openlab.payload.response.BaseResponse;
 import edu.ptit.openlab.service.LessonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/lesson")
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/lesson")
 public class LessonController {
-    @Autowired
-    private LessonService lessonService;
+    private final LessonService lessonService;
 
     @GetMapping("/all")
     public ResponseEntity<BaseResponse> getAllLesson() {

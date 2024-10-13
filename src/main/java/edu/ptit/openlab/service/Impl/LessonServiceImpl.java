@@ -7,6 +7,7 @@ import edu.ptit.openlab.repository.CourseRepository;
 import edu.ptit.openlab.repository.LessonRepository;
 import edu.ptit.openlab.service.LessonService;
 import edu.ptit.openlab.service.StorageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,15 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class LessonServiceImpl implements LessonService {
-    @Autowired
-    private StorageService storageService;
+    private final StorageService storageService;
 
-    @Autowired
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
-    @Autowired
-    private LessonRepository lessonRepository;
+    private final LessonRepository lessonRepository;
 
     @Override
     public BaseResponse getAllLesson() {
@@ -48,13 +47,15 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    public BaseResponse createLesson(MultipartFile file, String title, String document, String description,
+    public BaseResponse createLesson(MultipartFile thumbnail, MultipartFile videoUrl, String nameLesson, String document, String description,
             Long courseId) {
-        if (!storageService.isVideoFileWithTika(file)) {
+        if (!storageService.isVideoFileWithTika(videoUrl)) {
             return new BaseResponse(400, "File is not a valid video type", null);
         }
 
-        String savedFilePath = storageService.saveFile(file);
+        String savedFilePath = storageService.saveFile(videoUrl);
+        String fileName = storageService.uploadImageToFileSystem(thumbnail);
+
         try {
             Course course = courseRepository.findById(courseId).orElse(null);
 
@@ -63,11 +64,11 @@ public class LessonServiceImpl implements LessonService {
             }
 
             Lesson lesson = new Lesson();
-            lesson.setTitleLesson(title);
-            lesson.setUrlVideo(savedFilePath);
-            lesson.setUrlDocument(document);
+            lesson.setNameLesson(nameLesson);
+            lesson.setThumbnail(fileName);
+            lesson.setVideoUrl(savedFilePath);
+            lesson.setDocumentUrl(document);
             lesson.setDescription(description);
-            lesson.setIsCompleted(false);
             lesson.setCourse(course);
 
             lessonRepository.save(lesson);
@@ -80,38 +81,50 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    public BaseResponse updateLesson(MultipartFile file, String title, String document, String description,
-            Long lessonId, Long courseId) {
-        if (!storageService.isVideoFileWithTika(file)) {
-            return new BaseResponse(400, "File is not a valid video type", null);
-        }
-        String savedFilePath = storageService.saveFile(file);
-
+    public BaseResponse updateLesson(MultipartFile thumbnail, MultipartFile videoUrl, String nameLesson, String document, String description, Long lessonId) {
         try {
             Lesson lesson = lessonRepository.findById(lessonId).orElse(null);
             if (lesson == null) {
                 return new BaseResponse(404, "Lesson not found", null);
             }
 
-            Course course = courseRepository.findById(courseId).orElse(null);
-            if (course == null) {
-                return new BaseResponse(404, "Course not found", null);
+            // Kiểm tra và cập nhật tên bài học
+            if (nameLesson != null && !nameLesson.isEmpty()) {
+                lesson.setNameLesson(nameLesson);
             }
 
-            lesson.setTitleLesson(title);
-            lesson.setUrlDocument(document);
-            lesson.setDescription(description);
-            lesson.setUrlVideo(savedFilePath);
-            lesson.setIsCompleted(false);
+            // Kiểm tra và cập nhật thumbnail nếu có file mới
+            if (thumbnail != null && !thumbnail.isEmpty()) {
+                String fileName = storageService.uploadImageToFileSystem(thumbnail);
+                lesson.setThumbnail(fileName);
+            }
 
-            lesson.setCourse(course);
+            // Kiểm tra và cập nhật tài liệu nếu có
+            if (document != null && !document.isEmpty()) {
+                lesson.setDocumentUrl(document);
+            }
+
+            // Kiểm tra và cập nhật mô tả nếu có
+            if (description != null && !description.isEmpty()) {
+                lesson.setDescription(description);
+            }
+
+            // Kiểm tra và cập nhật video nếu có file mới
+            if (videoUrl != null && !videoUrl.isEmpty()) {
+                if (!storageService.isVideoFileWithTika(videoUrl)) {
+                    return new BaseResponse(400, "File is not a valid video type", null);
+                }
+                String savedFilePath = storageService.saveFile(videoUrl);
+                lesson.setVideoUrl(savedFilePath);
+            }
 
             lessonRepository.save(lesson);
             return new BaseResponse(200, "Lesson updated successfully", lesson);
         } catch (Exception e) {
-            return new BaseResponse(500, "Error updating lesson", null);
+            return new BaseResponse(500, "Error updating lesson: " + e.getMessage(), null);
         }
     }
+
 
     @Override
     @Transactional

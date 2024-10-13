@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "course")
-public class Course {
+public class Course extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -23,58 +23,32 @@ public class Course {
     @Column(name = "sub_id", nullable = false, unique = true)
     private String subId;
 
-    @Column(name = "title", nullable = false)  // Tiêu đề khoá học không nên bỏ trống
-    private String title;
+    @Column(name = "name_course", nullable = false)
+    private String nameCourse;
 
     @Column(name = "thumbnail", nullable = false)
     private String thumbnail;
 
-    @Column(name = "is_completed", nullable = false)
-    private Boolean isCompleted = false;  // Mặc định là false khi tạo mới
+    @Column(name = "type_course", length = 100, nullable = false)
+    private String typeCourse;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_date")
-    private Date startDate;  // Mặc định null khi tạo mới
-
-    @Column(name = "created_by", length = 100, nullable = false)  // Cần biết ai tạo khoá học
-    private String createdBy;
-
-    @Column(name = "type_product", length = 100, nullable = false)  // Đảm bảo có loại sản phẩm
-    private String typeProduct;
-
-    @Column(name = "is_publish", nullable = false)  // Đảm bảo giá trị không bị bỏ trống
-    private Boolean isPublish;
-
-    @Lob
-    @Column(name = "description", columnDefinition = "TEXT")  // Hỗ trợ lưu trữ văn bản dài
+    @Column(name = "description", columnDefinition = "LONGTEXT")  // Hỗ trợ lưu trữ văn bản dài
     private String description;
 
     @Column(name = "original_price", nullable = false)
-    private Double originalPrice;  // Thuộc tính originalPrice
+    private Double originalPrice;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Date createdAt;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    @Column(name = "created_by", length = 100, nullable = false)  // Cần biết ai tạo khoá học
+    private String createdBy;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "courses", cascade = CascadeType.REMOVE)
     private List<User> users;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "courses", cascade = CascadeType.REMOVE)
+    private List<Product> products;
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lesson> lessons;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new Date();
-        isCompleted = false;  // Mặc định là false khi tạo mới
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = new Date();
-    }
 }

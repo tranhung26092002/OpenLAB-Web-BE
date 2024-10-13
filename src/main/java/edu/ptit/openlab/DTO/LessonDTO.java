@@ -11,10 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class LessonDTO {
-    private Long courseId;
-    private String titleLesson;
-    private MultipartFile urlVideo;
-    private String urlDocument;
+    private String nameLesson;
+    private MultipartFile thumbnail;
+    private MultipartFile videoUrl;
+    private String documentUrl;
     private String description;
-    private Boolean isCompleted;
 }
